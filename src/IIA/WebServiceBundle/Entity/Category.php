@@ -42,6 +42,11 @@ class Category
      */
     private $updatedAt;
 
+    /**
+    * @ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\Mcq", mappedBy="category")
+    */
+    private $mcqs;
+
 
     /**
      * Get id
@@ -120,5 +125,45 @@ class Category
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->mcqs = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add mcqs
+     *
+     * @param \IIA\WebServiceBundle\Entity\Mcq $mcqs
+     * @return Category
+     */
+    public function addMcq(\IIA\WebServiceBundle\Entity\Mcq $mcqs)
+    {
+        $this->mcqs[] = $mcqs;
+
+        return $this;
+    }
+
+    /**
+     * Remove mcqs
+     *
+     * @param \IIA\WebServiceBundle\Entity\Mcq $mcqs
+     */
+    public function removeMcq(\IIA\WebServiceBundle\Entity\Mcq $mcqs)
+    {
+        $this->mcqs->removeElement($mcqs);
+    }
+
+    /**
+     * Get mcqs
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMcqs()
+    {
+        return $this->mcqs;
     }
 }

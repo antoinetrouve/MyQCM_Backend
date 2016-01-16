@@ -42,6 +42,16 @@ class Team
      */
     private $updatedAt;
 
+    /**
+    * @ORM\ManyToMany(targetEntity="IIA\WebServiceBundle\Entity\Mcq", cascade={"persist"})
+    */
+    private $mcqs;
+
+    /**
+    * @ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\User", mappedBy="team")
+    */
+    private $users;
+
 
     /**
      * Get id
@@ -120,5 +130,78 @@ class Team
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->mcqs = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add mcqs
+     *
+     * @param \IIA\WebServiceBundle\Entity\Qcm $mcqs
+     * @return Team
+     */
+    public function addMcq(\IIA\WebServiceBundle\Entity\Qcm $mcqs)
+    {
+        $this->mcqs[] = $mcqs;
+
+        return $this;
+    }
+
+    /**
+     * Remove mcqs
+     *
+     * @param \IIA\WebServiceBundle\Entity\Qcm $mcqs
+     */
+    public function removeMcq(\IIA\WebServiceBundle\Entity\Qcm $mcqs)
+    {
+        $this->mcqs->removeElement($mcqs);
+    }
+
+    /**
+     * Get mcqs
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMcqs()
+    {
+        return $this->mcqs;
+    }
+
+    /**
+     * Add users
+     *
+     * @param \IIA\WebServiceBundle\Entity\User $users
+     * @return Team
+     */
+    public function addUser(\IIA\WebServiceBundle\Entity\User $users)
+    {
+        $this->users[] = $users;
+
+        return $this;
+    }
+
+    /**
+     * Remove users
+     *
+     * @param \IIA\WebServiceBundle\Entity\User $users
+     */
+    public function removeUser(\IIA\WebServiceBundle\Entity\User $users)
+    {
+        $this->users->removeElement($users);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUsers()
+    {
+        return $this->users;
     }
 }

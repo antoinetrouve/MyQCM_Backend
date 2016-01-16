@@ -49,6 +49,14 @@ class Answer
      */
     private $updatedAt;
 
+    /**
+    * @var \Question
+    * 
+    * @ORM\ManyToOne(targetEntity="IIA\WebServiceBundle\Entity\Question", inversedBy="answers")
+    * @ORM\JoinColumn(nullable=false)
+    */
+    private $question;
+
 
     /**
      * Get id
@@ -150,5 +158,28 @@ class Answer
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * Set question
+     *
+     * @param \IIA\WebServiceBunde\Entity\Question $question
+     * @return Answer
+     */
+    public function setQuestion(\IIA\WebServiceBunde\Entity\Question $question = null)
+    {
+        $this->question = $question;
+
+        return $this;
+    }
+
+    /**
+     * Get question
+     *
+     * @return \IIA\WebServiceBunde\Entity\Question 
+     */
+    public function getQuestion()
+    {
+        return $this->question;
     }
 }

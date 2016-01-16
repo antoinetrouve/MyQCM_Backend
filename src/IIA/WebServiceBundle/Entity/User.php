@@ -77,6 +77,14 @@ class User
      */
     private $updatedAt;
 
+    /**
+    * @var \Team
+    * 
+    * @ORM\ManyToOne(targetEntity="IIA\WebServiceBundle\Entity\Team", inversedBy="users")
+    * @ORM\JoinColumn(nullable=false)
+    */
+    private $team;
+
 
     /**
      * Get id
@@ -270,5 +278,28 @@ class User
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * Set team
+     *
+     * @param \IIA\WebServiceBundle\Entity\Team $team
+     * @return User
+     */
+    public function setTeam(\IIA\WebServiceBundle\Entity\Team $team)
+    {
+        $this->team = $team;
+
+        return $this;
+    }
+
+    /**
+     * Get team
+     *
+     * @return \IIA\WebServiceBundle\Entity\Team 
+     */
+    public function getTeam()
+    {
+        return $this->team;
     }
 }

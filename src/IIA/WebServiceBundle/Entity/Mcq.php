@@ -70,6 +70,19 @@ class Mcq
      */
     private $updatedAt;
 
+    /**
+    * @ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\Question", mappedBy="mcq")
+    */
+    private $questions;
+
+    /**
+    * @var \Category
+    * 
+    * @ORM\ManyToOne(targetEntity="IIA\WebServiceBundle\Entity\Category", inversedBy="mcqs")
+    * @ORM\JoinColumn(nullable=false)
+    */
+    private $category;
+
 
     /**
      * Get id
@@ -240,5 +253,68 @@ class Mcq
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->questions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add questions
+     *
+     * @param \IIA\WebServiceBundle\Entity\Question $questions
+     * @return Mcq
+     */
+    public function addQuestion(\IIA\WebServiceBundle\Entity\Question $questions)
+    {
+        $this->questions[] = $questions;
+
+        return $this;
+    }
+
+    /**
+     * Remove questions
+     *
+     * @param \IIA\WebServiceBundle\Entity\Question $questions
+     */
+    public function removeQuestion(\IIA\WebServiceBundle\Entity\Question $questions)
+    {
+        $this->questions->removeElement($questions);
+    }
+
+    /**
+     * Get questions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getQuestions()
+    {
+        return $this->questions;
+    }
+
+    /**
+     * Set category
+     *
+     * @param \IIA\WebServiceBundle\Entity\Category $category
+     * @return Mcq
+     */
+    public function setCategory(\IIA\WebServiceBundle\Entity\Category $category)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \IIA\WebServiceBundle\Entity\Category 
+     */
+    public function getCategory()
+    {
+        return $this->category;
     }
 }
