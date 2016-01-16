@@ -1,0 +1,8 @@
+iia_web_service:
+    resource: "@IIAWebServiceBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
