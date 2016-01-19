@@ -5,12 +5,12 @@ namespace IIA\WebServiceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Answer
+ * Category
  *
- * @ORM\Table(name="answer")
- * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\AnswerRepository")
+ * @ORM\Table(name="category")
+ * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\CategoryRepository")
  */
-class Answer
+class Category
 {
     /**
      * @var int
@@ -24,16 +24,9 @@ class Answer
     /**
      * @var string
      *
-     * @ORM\Column(name="value", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255)
      */
-    private $value;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_Valid", type="boolean")
-     */
-    private $isValid;
+    private $name;
 
     /**
      * @var \DateTime
@@ -50,12 +43,9 @@ class Answer
     private $updatedAt;
 
     /**
-    * @var \Question
-    * 
-    * @ORM\ManyToOne(targetEntity="IIA\WebServiceBundle\Entity\Question", inversedBy="answers")
-    * @ORM\JoinColumn(nullable=false)
+    * @ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\Mcq", mappedBy="category")
     */
-    private $question;
+    private $mcqs;
 
 
     /**
@@ -69,56 +59,33 @@ class Answer
     }
 
     /**
-     * Set value
+     * Set name
      *
-     * @param string $value
-     * @return Answer
+     * @param string $name
+     * @return Category
      */
-    public function setValue($value)
+    public function setName($name)
     {
-        $this->value = $value;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get value
+     * Get name
      *
      * @return string 
      */
-    public function getValue()
+    public function getName()
     {
-        return $this->value;
-    }
-
-    /**
-     * Set isValid
-     *
-     * @param boolean $isValid
-     * @return Answer
-     */
-    public function setIsValid($isValid)
-    {
-        $this->isValid = $isValid;
-
-        return $this;
-    }
-
-    /**
-     * Get isValid
-     *
-     * @return boolean 
-     */
-    public function getIsValid()
-    {
-        return $this->isValid;
+        return $this->name;
     }
 
     /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
-     * @return Answer
+     * @return Category
      */
     public function setCreatedAt($createdAt)
     {
@@ -141,7 +108,7 @@ class Answer
      * Set updatedAt
      *
      * @param \DateTime $updatedAt
-     * @return Answer
+     * @return Category
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -159,27 +126,44 @@ class Answer
     {
         return $this->updatedAt;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->mcqs = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
-     * Set question
+     * Add mcqs
      *
-     * @param \IIA\WebServiceBunde\Entity\Question $question
-     * @return Answer
+     * @param \IIA\WebServiceBundle\Entity\Mcq $mcqs
+     * @return Category
      */
-    public function setQuestion(\IIA\WebServiceBundle\Entity\Question $question = null)
+    public function addMcq(\IIA\WebServiceBundle\Entity\Mcq $mcqs)
     {
-        $this->question = $question;
+        $this->mcqs[] = $mcqs;
 
         return $this;
     }
 
     /**
-     * Get question
+     * Remove mcqs
      *
-     * @return \IIA\WebServiceBunde\Entity\Question 
+     * @param \IIA\WebServiceBundle\Entity\Mcq $mcqs
      */
-    public function getQuestion()
+    public function removeMcq(\IIA\WebServiceBundle\Entity\Mcq $mcqs)
     {
-        return $this->question;
+        $this->mcqs->removeElement($mcqs);
+    }
+
+    /**
+     * Get mcqs
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMcqs()
+    {
+        return $this->mcqs;
     }
 }

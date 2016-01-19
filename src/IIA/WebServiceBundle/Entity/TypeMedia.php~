@@ -5,12 +5,12 @@ namespace IIA\WebServiceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Answer
+ * TypeMedia
  *
- * @ORM\Table(name="answer")
- * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\AnswerRepository")
+ * @ORM\Table(name="type_media")
+ * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\TypeMediaRepository")
  */
-class Answer
+class TypeMedia
 {
     /**
      * @var int
@@ -24,16 +24,9 @@ class Answer
     /**
      * @var string
      *
-     * @ORM\Column(name="value", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255)
      */
-    private $value;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_Valid", type="boolean")
-     */
-    private $isValid;
+    private $name;
 
     /**
      * @var \DateTime
@@ -50,12 +43,9 @@ class Answer
     private $updatedAt;
 
     /**
-    * @var \Question
-    * 
-    * @ORM\ManyToOne(targetEntity="IIA\WebServiceBundle\Entity\Question", inversedBy="answers")
-    * @ORM\JoinColumn(nullable=false)
+    *@ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\Media", mappedBy="typeMedia")
     */
-    private $question;
+    private $medias;
 
 
     /**
@@ -69,56 +59,33 @@ class Answer
     }
 
     /**
-     * Set value
+     * Set name
      *
-     * @param string $value
-     * @return Answer
+     * @param string $name
+     * @return TypeMedia
      */
-    public function setValue($value)
+    public function setName($name)
     {
-        $this->value = $value;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get value
+     * Get name
      *
      * @return string 
      */
-    public function getValue()
+    public function getName()
     {
-        return $this->value;
-    }
-
-    /**
-     * Set isValid
-     *
-     * @param boolean $isValid
-     * @return Answer
-     */
-    public function setIsValid($isValid)
-    {
-        $this->isValid = $isValid;
-
-        return $this;
-    }
-
-    /**
-     * Get isValid
-     *
-     * @return boolean 
-     */
-    public function getIsValid()
-    {
-        return $this->isValid;
+        return $this->name;
     }
 
     /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
-     * @return Answer
+     * @return TypeMedia
      */
     public function setCreatedAt($createdAt)
     {
@@ -141,7 +108,7 @@ class Answer
      * Set updatedAt
      *
      * @param \DateTime $updatedAt
-     * @return Answer
+     * @return TypeMedia
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -159,27 +126,44 @@ class Answer
     {
         return $this->updatedAt;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->medias = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
-     * Set question
+     * Add medias
      *
-     * @param \IIA\WebServiceBunde\Entity\Question $question
-     * @return Answer
+     * @param \IIA\WebServiceBundle\Entity\Media $medias
+     * @return TypeMedia
      */
-    public function setQuestion(\IIA\WebServiceBundle\Entity\Question $question = null)
+    public function addMedia(\IIA\WebServiceBundle\Entity\Media $medias)
     {
-        $this->question = $question;
+        $this->medias[] = $medias;
 
         return $this;
     }
 
     /**
-     * Get question
+     * Remove medias
      *
-     * @return \IIA\WebServiceBunde\Entity\Question 
+     * @param \IIA\WebServiceBundle\Entity\Media $medias
      */
-    public function getQuestion()
+    public function removeMedia(\IIA\WebServiceBundle\Entity\Media $medias)
     {
-        return $this->question;
+        $this->medias->removeElement($medias);
+    }
+
+    /**
+     * Get medias
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMedias()
+    {
+        return $this->medias;
     }
 }

@@ -5,12 +5,12 @@ namespace IIA\WebServiceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Answer
+ * Media
  *
- * @ORM\Table(name="answer")
- * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\AnswerRepository")
+ * @ORM\Table(name="media")
+ * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\MediaRepository")
  */
-class Answer
+class Media
 {
     /**
      * @var int
@@ -24,16 +24,16 @@ class Answer
     /**
      * @var string
      *
-     * @ORM\Column(name="value", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255)
      */
-    private $value;
+    private $name;
 
     /**
-     * @var bool
+     * @var string
      *
-     * @ORM\Column(name="is_Valid", type="boolean")
+     * @ORM\Column(name="url", type="string", length=255)
      */
-    private $isValid;
+    private $url;
 
     /**
      * @var \DateTime
@@ -50,12 +50,10 @@ class Answer
     private $updatedAt;
 
     /**
-    * @var \Question
-    * 
-    * @ORM\ManyToOne(targetEntity="IIA\WebServiceBundle\Entity\Question", inversedBy="answers")
-    * @ORM\JoinColumn(nullable=false)
+    * @var \TypeMedia
+    * @ORM\ManyToOne(targetEntity="IIA\WebServiceBundle\Entity\TypeMedia", inversedBy="medias")
     */
-    private $question;
+    private $typeMedia;
 
 
     /**
@@ -69,56 +67,56 @@ class Answer
     }
 
     /**
-     * Set value
+     * Set name
      *
-     * @param string $value
-     * @return Answer
+     * @param string $name
+     * @return Media
      */
-    public function setValue($value)
+    public function setName($name)
     {
-        $this->value = $value;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get value
+     * Get name
      *
      * @return string 
      */
-    public function getValue()
+    public function getName()
     {
-        return $this->value;
+        return $this->name;
     }
 
     /**
-     * Set isValid
+     * Set url
      *
-     * @param boolean $isValid
-     * @return Answer
+     * @param string $url
+     * @return Media
      */
-    public function setIsValid($isValid)
+    public function setUrl($url)
     {
-        $this->isValid = $isValid;
+        $this->url = $url;
 
         return $this;
     }
 
     /**
-     * Get isValid
+     * Get url
      *
-     * @return boolean 
+     * @return string 
      */
-    public function getIsValid()
+    public function getUrl()
     {
-        return $this->isValid;
+        return $this->url;
     }
 
     /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
-     * @return Answer
+     * @return Media
      */
     public function setCreatedAt($createdAt)
     {
@@ -141,7 +139,7 @@ class Answer
      * Set updatedAt
      *
      * @param \DateTime $updatedAt
-     * @return Answer
+     * @return Media
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -161,25 +159,25 @@ class Answer
     }
 
     /**
-     * Set question
+     * Set typeMedia
      *
-     * @param \IIA\WebServiceBunde\Entity\Question $question
-     * @return Answer
+     * @param \IIA\WebServiceBundle\Entity\TypeMedia $typeMedia
+     * @return Media
      */
-    public function setQuestion(\IIA\WebServiceBundle\Entity\Question $question = null)
+    public function setTypeMedia(\IIA\WebServiceBundle\Entity\TypeMedia $typeMedia = null)
     {
-        $this->question = $question;
+        $this->typeMedia = $typeMedia;
 
         return $this;
     }
 
     /**
-     * Get question
+     * Get typeMedia
      *
-     * @return \IIA\WebServiceBunde\Entity\Question 
+     * @return \IIA\WebServiceBundle\Entity\TypeMedia 
      */
-    public function getQuestion()
+    public function getTypeMedia()
     {
-        return $this->question;
+        return $this->typeMedia;
     }
 }
