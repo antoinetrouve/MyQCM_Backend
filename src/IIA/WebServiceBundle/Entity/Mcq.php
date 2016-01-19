@@ -83,6 +83,11 @@ class Mcq
     */
     private $category;
 
+    /**
+    * @ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\Result", mappedBy="mcq")
+    */
+    private $results;
+
 
     /**
      * Get id
@@ -316,5 +321,38 @@ class Mcq
     public function getCategory()
     {
         return $this->category;
+    }
+
+    /**
+     * Add results
+     *
+     * @param \IIA\WebServiceBundle\Entity\Result $results
+     * @return Mcq
+     */
+    public function addResult(\IIA\WebServiceBundle\Entity\Result $results)
+    {
+        $this->results[] = $results;
+
+        return $this;
+    }
+
+    /**
+     * Remove results
+     *
+     * @param \IIA\WebServiceBundle\Entity\Result $results
+     */
+    public function removeResult(\IIA\WebServiceBundle\Entity\Result $results)
+    {
+        $this->results->removeElement($results);
+    }
+
+    /**
+     * Get results
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getResults()
+    {
+        return $this->results;
     }
 }

@@ -5,12 +5,12 @@ namespace IIA\WebServiceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Media
+ * TypeMedia
  *
- * @ORM\Table(name="media")
- * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\MediaRepository")
+ * @ORM\Table(name="type_media")
+ * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\TypeMediaRepository")
  */
-class Media
+class TypeMedia
 {
     /**
      * @var int
@@ -29,13 +29,6 @@ class Media
     private $name;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="url", type="string", length=255)
-     */
-    private $url;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -50,10 +43,9 @@ class Media
     private $updatedAt;
 
     /**
-    * @var \TypeMedia
-    * @ORM\ManyToOne(targetEntity="IIA\WebServiceBundle\Entity\TypeMedia", inversedBy="medias")
+    *@ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\Media", mappedBy="typeMedia")
     */
-    private $typeMedia;
+    private $medias;
 
 
     /**
@@ -70,7 +62,7 @@ class Media
      * Set name
      *
      * @param string $name
-     * @return Media
+     * @return TypeMedia
      */
     public function setName($name)
     {
@@ -90,33 +82,10 @@ class Media
     }
 
     /**
-     * Set url
-     *
-     * @param string $url
-     * @return Media
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
-
-        return $this;
-    }
-
-    /**
-     * Get url
-     *
-     * @return string 
-     */
-    public function getUrl()
-    {
-        return $this->url;
-    }
-
-    /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
-     * @return Media
+     * @return TypeMedia
      */
     public function setCreatedAt($createdAt)
     {
@@ -139,7 +108,7 @@ class Media
      * Set updatedAt
      *
      * @param \DateTime $updatedAt
-     * @return Media
+     * @return TypeMedia
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -157,27 +126,44 @@ class Media
     {
         return $this->updatedAt;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->medias = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
-     * Set typeMedia
+     * Add medias
      *
-     * @param \IIA\WebServiceBundle\Entity\TypeMedia $typeMedia
-     * @return Media
+     * @param \IIA\WebServiceBundle\Entity\Media $medias
+     * @return TypeMedia
      */
-    public function setTypeMedia(\IIA\WebServiceBundle\Entity\TypeMedia $typeMedia = null)
+    public function addMedia(\IIA\WebServiceBundle\Entity\Media $medias)
     {
-        $this->typeMedia = $typeMedia;
+        $this->medias[] = $medias;
 
         return $this;
     }
 
     /**
-     * Get typeMedia
+     * Remove medias
      *
-     * @return \IIA\WebServiceBundle\Entity\TypeMedia 
+     * @param \IIA\WebServiceBundle\Entity\Media $medias
      */
-    public function getTypeMedia()
+    public function removeMedia(\IIA\WebServiceBundle\Entity\Media $medias)
     {
-        return $this->typeMedia;
+        $this->medias->removeElement($medias);
+    }
+
+    /**
+     * Get medias
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMedias()
+    {
+        return $this->medias;
     }
 }

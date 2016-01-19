@@ -5,12 +5,12 @@ namespace IIA\WebServiceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Media
+ * TypeUser
  *
- * @ORM\Table(name="media")
- * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\MediaRepository")
+ * @ORM\Table(name="type_user")
+ * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\TypeUserRepository")
  */
-class Media
+class TypeUser
 {
     /**
      * @var int
@@ -24,16 +24,9 @@ class Media
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="role", type="string", length=255)
      */
-    private $name;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="url", type="string", length=255)
-     */
-    private $url;
+    private $role;
 
     /**
      * @var \DateTime
@@ -50,10 +43,9 @@ class Media
     private $updatedAt;
 
     /**
-    * @var \TypeMedia
-    * @ORM\ManyToOne(targetEntity="IIA\WebServiceBundle\Entity\TypeMedia", inversedBy="medias")
+    * @ORM\ManyToMany(targetEntity="IIA\WebServiceBundle\Entity\User", cascade={"persist"})
     */
-    private $typeMedia;
+    private $users;
 
 
     /**
@@ -67,56 +59,33 @@ class Media
     }
 
     /**
-     * Set name
+     * Set role
      *
-     * @param string $name
-     * @return Media
+     * @param string $role
+     * @return TypeUser
      */
-    public function setName($name)
+    public function setRole($role)
     {
-        $this->name = $name;
+        $this->role = $role;
 
         return $this;
     }
 
     /**
-     * Get name
+     * Get role
      *
      * @return string 
      */
-    public function getName()
+    public function getRole()
     {
-        return $this->name;
-    }
-
-    /**
-     * Set url
-     *
-     * @param string $url
-     * @return Media
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
-
-        return $this;
-    }
-
-    /**
-     * Get url
-     *
-     * @return string 
-     */
-    public function getUrl()
-    {
-        return $this->url;
+        return $this->role;
     }
 
     /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
-     * @return Media
+     * @return TypeUser
      */
     public function setCreatedAt($createdAt)
     {
@@ -139,7 +108,7 @@ class Media
      * Set updatedAt
      *
      * @param \DateTime $updatedAt
-     * @return Media
+     * @return TypeUser
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -157,27 +126,44 @@ class Media
     {
         return $this->updatedAt;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
-     * Set typeMedia
+     * Add users
      *
-     * @param \IIA\WebServiceBundle\Entity\TypeMedia $typeMedia
-     * @return Media
+     * @param \IIA\WebServiceBundle\Entity\User $users
+     * @return TypeUser
      */
-    public function setTypeMedia(\IIA\WebServiceBundle\Entity\TypeMedia $typeMedia = null)
+    public function addUser(\IIA\WebServiceBundle\Entity\User $users)
     {
-        $this->typeMedia = $typeMedia;
+        $this->users[] = $users;
 
         return $this;
     }
 
     /**
-     * Get typeMedia
+     * Remove users
      *
-     * @return \IIA\WebServiceBundle\Entity\TypeMedia 
+     * @param \IIA\WebServiceBundle\Entity\User $users
      */
-    public function getTypeMedia()
+    public function removeUser(\IIA\WebServiceBundle\Entity\User $users)
     {
-        return $this->typeMedia;
+        $this->users->removeElement($users);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUsers()
+    {
+        return $this->users;
     }
 }

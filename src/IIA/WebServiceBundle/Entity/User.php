@@ -50,13 +50,6 @@ class User
     private $password;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_Admin", type="boolean")
-     */
-    private $isAdmin;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="token", type="string", length=255)
@@ -84,6 +77,16 @@ class User
     * @ORM\JoinColumn(nullable=false)
     */
     private $team;
+
+    /**
+    * @ORM\ManyToMany(targetEntity="IIA\WebServiceBundle\Entity\TypeUser", cascade={"persist"})
+    */
+    private $typeUsers;
+
+    /**
+    * @ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\Result", mappedBy="user")
+    */
+    private $results;
 
 
     /**
@@ -189,29 +192,6 @@ class User
     }
 
     /**
-     * Set is_Admin
-     *
-     * @param boolean $isAdmin
-     * @return User
-     */
-    public function setIsAdmin($isAdmin)
-    {
-        $this->isAdmin = $isAdmin;
-
-        return $this;
-    }
-
-    /**
-     * Get is_Admin
-     *
-     * @return boolean 
-     */
-    public function getIsAdmin()
-    {
-        return $this->isAdmin;
-    }
-
-    /**
      * Set token
      *
      * @param string $token
@@ -301,5 +281,78 @@ class User
     public function getTeam()
     {
         return $this->team;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->typeUsers = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add typeUsers
+     *
+     * @param \IIA\WebServiceBundle\Entity\TypeUser $typeUsers
+     * @return User
+     */
+    public function addTypeUser(\IIA\WebServiceBundle\Entity\TypeUser $typeUsers)
+    {
+        $this->typeUsers[] = $typeUsers;
+
+        return $this;
+    }
+
+    /**
+     * Remove typeUsers
+     *
+     * @param \IIA\WebServiceBundle\Entity\TypeUser $typeUsers
+     */
+    public function removeTypeUser(\IIA\WebServiceBundle\Entity\TypeUser $typeUsers)
+    {
+        $this->typeUsers->removeElement($typeUsers);
+    }
+
+    /**
+     * Get typeUsers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTypeUsers()
+    {
+        return $this->typeUsers;
+    }
+
+    /**
+     * Add results
+     *
+     * @param \IIA\WebServiceBundle\Entity\Result $results
+     * @return User
+     */
+    public function addResult(\IIA\WebServiceBundle\Entity\Result $results)
+    {
+        $this->results[] = $results;
+
+        return $this;
+    }
+
+    /**
+     * Remove results
+     *
+     * @param \IIA\WebServiceBundle\Entity\Result $results
+     */
+    public function removeResult(\IIA\WebServiceBundle\Entity\Result $results)
+    {
+        $this->results->removeElement($results);
+    }
+
+    /**
+     * Get results
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getResults()
+    {
+        return $this->results;
     }
 }

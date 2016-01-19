@@ -35,6 +35,17 @@ class Result
      */
     private $isCompleted;
 
+    /**
+    * @var \User
+    * @ORM\ManyToOne(targetEntity="IIA\WebServiceBundle\Entity\User", inversedBy="results")
+    */
+    private $user;
+
+    /**
+    * @var \Mcq
+    * @ORM\ManyToOne(targetEntity="IIA\WebServiceBundle\Entity\Mcq", inversedBy="results")
+    */
+    private $mcq;
 
     /**
      * Get id
@@ -90,5 +101,51 @@ class Result
     public function getIsCompleted()
     {
         return $this->isCompleted;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \IIA\WebServiceBundle\Entity\User $user
+     * @return Result
+     */
+    public function setUser(\IIA\WebServiceBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \IIA\WebServiceBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set mcq
+     *
+     * @param \IIA\WebServiceBundle\Entity\Mcq $mcq
+     * @return Result
+     */
+    public function setMcq(\IIA\WebServiceBundle\Entity\Mcq $mcq = null)
+    {
+        $this->mcq = $mcq;
+
+        return $this;
+    }
+
+    /**
+     * Get mcq
+     *
+     * @return \IIA\WebServiceBundle\Entity\Mcq 
+     */
+    public function getMcq()
+    {
+        return $this->mcq;
     }
 }
