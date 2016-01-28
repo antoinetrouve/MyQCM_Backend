@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * User
  *
- * @ORM\Table(name="user")
+ * @ORM\Table(name="fos_user")
  * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\UserRepository")
  */
 class User extends BaseUser
@@ -28,6 +28,21 @@ class User extends BaseUser
     * @ORM\ManyToOne(targetEntity="IIA\WebServiceBundle\Entity\Team", inversedBy="users")
     */
     private $team;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $createdAt;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_at", type="datetime")
+     */
+    private $updatedAt;
+    
 
     /**
     * @ORM\ManyToMany(targetEntity="IIA\WebServiceBundle\Entity\TypeUser", cascade={"persist"})
