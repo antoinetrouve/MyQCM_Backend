@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="mcq")
  * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\McqRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Mcq
 {
@@ -216,14 +217,14 @@ class Mcq
 
     /**
      * Set createdAt
-     *
+     * @ORM\PrePersist
      * @param \DateTime $createdAt
      * @return Mcq
      */
     public function setCreatedAt($createdAt)
     {
-        $this->createdAt = $createdAt;
-
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -239,14 +240,13 @@ class Mcq
 
     /**
      * Set updatedAt
-     *
+     * @ORM\PreUpdate
      * @param \DateTime $updatedAt
      * @return Mcq
      */
     public function setUpdatedAt($updatedAt)
     {
-        $this->updatedAt = $updatedAt;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 

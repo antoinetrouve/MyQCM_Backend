@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="media")
  * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\MediaRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Media
 {
@@ -114,14 +115,14 @@ class Media
 
     /**
      * Set createdAt
-     *
+     * @ORM\PrePersist
      * @param \DateTime $createdAt
      * @return Media
      */
     public function setCreatedAt($createdAt)
     {
-        $this->createdAt = $createdAt;
-
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -137,14 +138,13 @@ class Media
 
     /**
      * Set updatedAt
-     *
+     * @ORM\PreUpdate
      * @param \DateTime $updatedAt
      * @return Media
      */
     public function setUpdatedAt($updatedAt)
     {
-        $this->updatedAt = $updatedAt;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -167,7 +167,6 @@ class Media
     public function setTypeMedia(\IIA\WebServiceBundle\Entity\TypeMedia $typeMedia = null)
     {
         $this->typeMedia = $typeMedia;
-
         return $this;
     }
 

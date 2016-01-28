@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="question")
  * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\QuestionRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Question
 {
@@ -96,14 +97,14 @@ class Question
 
     /**
      * Set created_at
-     *
+     * @ORM\PrePersist
      * @param \DateTime $created_at
      * @return Question
      */
     public function setCreated_at($created_at)
     {
-        $this->created_at = $created_at;
-
+        $this->created_at = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -119,14 +120,13 @@ class Question
 
     /**
      * Set updated_at
-     *
+     * @ORM\PreUpdate
      * @param \DateTime $updated_at
      * @return Question
      */
     public function setUpdated_at($updated_at)
     {
-        $this->updated_at = $updated_at;
-
+        $this->updated_at = new \DateTime();
         return $this;
     }
 
@@ -138,6 +138,111 @@ class Question
     public function getUpdated_at()
     {
         return $this->updated_at;
+    }
+
+    /**
+     * Set media
+     *
+     * @param \IIA\WebServiceBundle\Entity\Media $media
+     * @return Question
+     */
+    public function setMedia(\IIA\WebServiceBundle\Entity\Media $media = null)
+    {
+        $this->media = $media;
+        return $this;
+    }
+
+    /**
+     * Get media
+     *
+     * @return \IIA\WebServiceBundle\Entity\Media 
+     */
+    public function getMedia()
+    {
+        return $this->media;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add answers
+     *
+     * @param \IIA\WebServiceBundle\Entity\Answer $answers
+     * @return Question
+     */
+    public function addAnswer(\IIA\WebServiceBundle\Entity\Answer $answers)
+    {
+        $this->answers[] = $answers;
+        return $this;
+    }
+
+    /**
+     * Remove answers
+     *
+     * @param \IIA\WebServiceBundle\Entity\Answer $answers
+     */
+    public function removeAnswer(\IIA\WebServiceBundle\Entity\Answer $answers)
+    {
+        $this->answers->removeElement($answers);
+    }
+
+    /**
+     * Get answers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAnswers()
+    {
+        return $this->answers;
+    }
+
+    /**
+     * Set question
+     *
+     * @param \IIA\WebServiceBundle\Entity\Mcq $question
+     * @return Question
+     */
+    public function setQuestion(\IIA\WebServiceBundle\Entity\Mcq $question)
+    {
+        $this->question = $question;
+        return $this;
+    }
+
+    /**
+     * Get question
+     *
+     * @return \IIA\WebServiceBundle\Entity\Mcq 
+     */
+    public function getQuestion()
+    {
+        return $this->question;
+    }
+
+    /**
+     * Set mcq
+     *
+     * @param \IIA\WebServiceBundle\Entity\Mcq $mcq
+     * @return Question
+     */
+    public function setMcq(\IIA\WebServiceBundle\Entity\Mcq $mcq)
+    {
+        $this->mcq = $mcq;
+        return $this;
+    }
+
+    /**
+     * Get mcq
+     *
+     * @return \IIA\WebServiceBundle\Entity\Mcq 
+     */
+    public function getMcq()
+    {
+        return $this->mcq;
     }
 
     /**
@@ -184,114 +289,5 @@ class Question
     public function getUpdatedAt()
     {
         return $this->updatedAt;
-    }
-
-    /**
-     * Set media
-     *
-     * @param \IIA\WebServiceBundle\Entity\Media $media
-     * @return Question
-     */
-    public function setMedia(\IIA\WebServiceBundle\Entity\Media $media = null)
-    {
-        $this->media = $media;
-
-        return $this;
-    }
-
-    /**
-     * Get media
-     *
-     * @return \IIA\WebServiceBundle\Entity\Media 
-     */
-    public function getMedia()
-    {
-        return $this->media;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add answers
-     *
-     * @param \IIA\WebServiceBundle\Entity\Answer $answers
-     * @return Question
-     */
-    public function addAnswer(\IIA\WebServiceBundle\Entity\Answer $answers)
-    {
-        $this->answers[] = $answers;
-
-        return $this;
-    }
-
-    /**
-     * Remove answers
-     *
-     * @param \IIA\WebServiceBundle\Entity\Answer $answers
-     */
-    public function removeAnswer(\IIA\WebServiceBundle\Entity\Answer $answers)
-    {
-        $this->answers->removeElement($answers);
-    }
-
-    /**
-     * Get answers
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getAnswers()
-    {
-        return $this->answers;
-    }
-
-    /**
-     * Set question
-     *
-     * @param \IIA\WebServiceBundle\Entity\Mcq $question
-     * @return Question
-     */
-    public function setQuestion(\IIA\WebServiceBundle\Entity\Mcq $question)
-    {
-        $this->question = $question;
-
-        return $this;
-    }
-
-    /**
-     * Get question
-     *
-     * @return \IIA\WebServiceBundle\Entity\Mcq 
-     */
-    public function getQuestion()
-    {
-        return $this->question;
-    }
-
-    /**
-     * Set mcq
-     *
-     * @param \IIA\WebServiceBundle\Entity\Mcq $mcq
-     * @return Question
-     */
-    public function setMcq(\IIA\WebServiceBundle\Entity\Mcq $mcq)
-    {
-        $this->mcq = $mcq;
-
-        return $this;
-    }
-
-    /**
-     * Get mcq
-     *
-     * @return \IIA\WebServiceBundle\Entity\Mcq 
-     */
-    public function getMcq()
-    {
-        return $this->mcq;
     }
 }

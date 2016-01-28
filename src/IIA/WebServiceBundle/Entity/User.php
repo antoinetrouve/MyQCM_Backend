@@ -3,6 +3,7 @@
 namespace IIA\WebServiceBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="fos_user")
  * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\UserRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class User extends BaseUser
 {
@@ -45,11 +47,6 @@ class User extends BaseUser
     
 
     /**
-    * @ORM\ManyToMany(targetEntity="IIA\WebServiceBundle\Entity\TypeUser", cascade={"persist"})
-    */
-    private $typeUsers;
-
-    /**
     * @ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\Result", mappedBy="user")
     */
     private $results;
@@ -60,7 +57,6 @@ class User extends BaseUser
     public function __construct()
     {
     	parent::__construct();
-    	$this->typeUsers = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -74,15 +70,15 @@ class User extends BaseUser
     }
 
     /**
+     * @ORM\PrePersist
      * Set createdAt
-     *
      * @param \DateTime $createdAt
      * @return User
      */
     public function setCreatedAt($createdAt)
     {
-        $this->createdAt = $createdAt;
-
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -97,21 +93,20 @@ class User extends BaseUser
     }
 
     /**
+     * @ORM\PreUpdate
      * Set updatedAt
-     *
      * @param \DateTime $updatedAt
      * @return User
      */
     public function setUpdatedAt($updatedAt)
     {
-        $this->updatedAt = $updatedAt;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
     /**
+     * @ORM\PreUpdate
      * Get updatedAt
-     *
      * @return \DateTime 
      */
     public function getUpdatedAt()
@@ -128,7 +123,6 @@ class User extends BaseUser
     public function setTeam(\IIA\WebServiceBundle\Entity\Team $team)
     {
         $this->team = $team;
-
         return $this;
     }
 
@@ -142,40 +136,6 @@ class User extends BaseUser
         return $this->team;
     }
 
-
-    /**
-     * Add typeUsers
-     *
-     * @param \IIA\WebServiceBundle\Entity\TypeUser $typeUsers
-     * @return User
-     */
-    public function addTypeUser(\IIA\WebServiceBundle\Entity\TypeUser $typeUsers)
-    {
-        $this->typeUsers[] = $typeUsers;
-
-        return $this;
-    }
-
-    /**
-     * Remove typeUsers
-     *
-     * @param \IIA\WebServiceBundle\Entity\TypeUser $typeUsers
-     */
-    public function removeTypeUser(\IIA\WebServiceBundle\Entity\TypeUser $typeUsers)
-    {
-        $this->typeUsers->removeElement($typeUsers);
-    }
-
-    /**
-     * Get typeUsers
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getTypeUsers()
-    {
-        return $this->typeUsers;
-    }
-
     /**
      * Add results
      *
@@ -185,7 +145,6 @@ class User extends BaseUser
     public function addResult(\IIA\WebServiceBundle\Entity\Result $results)
     {
         $this->results[] = $results;
-
         return $this;
     }
 

@@ -2,17 +2,16 @@
 
 namespace IIA\WebServiceBundle\Entity;
 
-use FOS\UserBundle\Model\ Group as BaseGroup;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Team
  *
- * @ORM\Table(name="team")
+ * @ORM\Table(name="Team")
  * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\TeamRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
-class Team extends BaseGroup
-{
+class Team {
     /**
      * @var int
      *
@@ -20,14 +19,7 @@ class Team extends BaseGroup
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
-    
-    /**
-     * @var string
-     * 
-     * @ORM\Column(name="title", type="string")
-     */
-    private $title;
+    private $id;
     
     /**
      * @var \DateTime
@@ -66,14 +58,14 @@ class Team extends BaseGroup
 
     /**
      * Set createdAt
-     *
+     * @ORM\PrePersist
      * @param \DateTime $createdAt
      * @return Team
      */
     public function setCreatedAt($createdAt)
     {
-        $this->createdAt = $createdAt;
-
+        $this->createdAt = new \DateTime();
+		$this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -89,14 +81,13 @@ class Team extends BaseGroup
 
     /**
      * Set updatedAt
-     *
+     * @ORM\PreUpdate
      * @param \DateTime $updatedAt
      * @return Team
      */
     public function setUpdatedAt($updatedAt)
     {
-        $this->updatedAt = $updatedAt;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -114,7 +105,6 @@ class Team extends BaseGroup
      */
     public function __construct()
     {
-    	parent::__construct();
         $this->mcqs = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -127,7 +117,6 @@ class Team extends BaseGroup
     public function addMcq(\IIA\WebServiceBundle\Entity\Mcq $mcqs)
     {
         $this->mcqs[] = $mcqs;
-
         return $this;
     }
 
@@ -160,7 +149,6 @@ class Team extends BaseGroup
     public function addUser(\IIA\WebServiceBundle\Entity\User $users)
     {
         $this->users[] = $users;
-
         return $this;
     }
 
@@ -182,28 +170,5 @@ class Team extends BaseGroup
     public function getUsers()
     {
         return $this->users;
-    }
-
-    /**
-     * Set title
-     *
-     * @param string $title
-     * @return Team
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * Get title
-     *
-     * @return string 
-     */
-    public function getTitle()
-    {
-        return $this->title;
     }
 }
