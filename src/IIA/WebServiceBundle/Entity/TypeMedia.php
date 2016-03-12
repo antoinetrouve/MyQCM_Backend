@@ -24,7 +24,7 @@ class TypeMedia
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
 
@@ -43,7 +43,7 @@ class TypeMedia
     private $updatedAt;
 
     /**
-    *@ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\Media", mappedBy="typeMedia")
+    *@ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\Media", mappedBy="typeMedia", cascade={"remove"})
     */
     private $medias;
 

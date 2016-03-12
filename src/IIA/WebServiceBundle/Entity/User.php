@@ -50,6 +50,12 @@ class User extends BaseUser
     * @ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\Result", mappedBy="user")
     */
     private $results;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="IIA\WebServiceBundle\Entity\Mcq", cascade={"persist"})
+     * 
+     */
+    private $mcqs;
 
     /**
      * Constructor
@@ -166,5 +172,38 @@ class User extends BaseUser
     public function getResults()
     {
         return $this->results;
+    }
+
+    /**
+     * Add mcqs
+     *
+     * @param \IIA\WebServiceBundle\Entity\Mcq $mcqs
+     * @return User
+     */
+    public function addMcq(\IIA\WebServiceBundle\Entity\Mcq $mcqs)
+    {
+        $this->mcqs[] = $mcqs;
+
+        return $this;
+    }
+
+    /**
+     * Remove mcqs
+     *
+     * @param \IIA\WebServiceBundle\Entity\Mcq $mcqs
+     */
+    public function removeMcq(\IIA\WebServiceBundle\Entity\Mcq $mcqs)
+    {
+        $this->mcqs->removeElement($mcqs);
+    }
+
+    /**
+     * Get mcqs
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMcqs()
+    {
+        return $this->mcqs;
     }
 }

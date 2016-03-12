@@ -25,7 +25,7 @@ class Mcq
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
 
@@ -37,22 +37,22 @@ class Mcq
     private $isActif;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="countdown", type="time")
+     * @var \int
+     * Compteur en seconde
+     * @ORM\Column(name="countdown", type="integer")
      */
     private $countdown;
 
     /**
      * @var \DateTime
-     *
+     * Date de début de diffusion
      * @ORM\Column(name="diffDeb", type="datetime")
      */
     private $diffDeb;
 
     /**
      * @var \DateTime
-     *
+     * Date de fin de diffusion
      * @ORM\Column(name="diffEnd", type="datetime")
      */
     private $diffEnd;
@@ -72,7 +72,7 @@ class Mcq
     private $updatedAt;
 
     /**
-    * @ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\Question", mappedBy="mcq")
+    * @ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\Question", mappedBy="mcq", cascade={"remove"})
     */
     private $questions;
 

@@ -49,7 +49,7 @@ class Question
     private $media;
 
     /**
-    * @ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\Answer", mappedBy="question")
+    * @ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\Answer", mappedBy="question", cascade={"remove"})
     */
     private $answers;
 
