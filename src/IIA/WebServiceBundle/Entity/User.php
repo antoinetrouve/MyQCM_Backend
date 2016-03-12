@@ -2,15 +2,18 @@
 
 namespace IIA\WebServiceBundle\Entity;
 
+use FOS\UserBundle\Model\User as BaseUser;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * User
  *
- * @ORM\Table(name="user")
+ * @ORM\Table(name="fos_user")
  * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\UserRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
-class User
+class User extends BaseUser
 {
     /**
      * @var int
@@ -19,75 +22,48 @@ class User
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    private $name;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="firstname", type="string", length=255)
-     */
-    private $firstname;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=255)
-     */
-    private $email;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="password", type="string", length=255)
-     */
-    private $password;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="token", type="string", length=255)
-     */
-    private $token;
-
+    * @var \Team
+    * 
+    * @ORM\ManyToOne(targetEntity="IIA\WebServiceBundle\Entity\Team", inversedBy="users")
+    */
+    private $team;
+    
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
-
+    
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime")
      */
     private $updatedAt;
-
-    /**
-    * @var \Team
-    * 
-    * @ORM\ManyToOne(targetEntity="IIA\WebServiceBundle\Entity\Team", inversedBy="users")
-    * @ORM\JoinColumn(nullable=false)
-    */
-    private $team;
-
-    /**
-    * @ORM\ManyToMany(targetEntity="IIA\WebServiceBundle\Entity\TypeUser", cascade={"persist"})
-    */
-    private $typeUsers;
+    
 
     /**
     * @ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\Result", mappedBy="user")
     */
     private $results;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="IIA\WebServiceBundle\Entity\Mcq", cascade={"persist"})
+     * 
+     */
+    private $mcqs;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+    	parent::__construct();
+    }
 
     /**
      * Get id
@@ -100,130 +76,15 @@ class User
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     * @return User
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set firstname
-     *
-     * @param string $firstname
-     * @return User
-     */
-    public function setFirstname($firstname)
-    {
-        $this->firstname = $firstname;
-
-        return $this;
-    }
-
-    /**
-     * Get firstname
-     *
-     * @return string 
-     */
-    public function getFirstname()
-    {
-        return $this->firstname;
-    }
-
-    /**
-     * Set email
-     *
-     * @param string $email
-     * @return User
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string 
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * Set password
-     *
-     * @param string $password
-     * @return User
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * Get password
-     *
-     * @return string 
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * Set token
-     *
-     * @param string $token
-     * @return User
-     */
-    public function setToken($token)
-    {
-        $this->token = $token;
-
-        return $this;
-    }
-
-    /**
-     * Get token
-     *
-     * @return string 
-     */
-    public function getToken()
-    {
-        return $this->token;
-    }
-
-    /**
+     * @ORM\PrePersist
      * Set createdAt
-     *
      * @param \DateTime $createdAt
      * @return User
      */
     public function setCreatedAt($createdAt)
     {
-        $this->createdAt = $createdAt;
-
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -238,21 +99,20 @@ class User
     }
 
     /**
+     * @ORM\PreUpdate
      * Set updatedAt
-     *
      * @param \DateTime $updatedAt
      * @return User
      */
     public function setUpdatedAt($updatedAt)
     {
-        $this->updatedAt = $updatedAt;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
     /**
+     * @ORM\PreUpdate
      * Get updatedAt
-     *
      * @return \DateTime 
      */
     public function getUpdatedAt()
@@ -269,7 +129,6 @@ class User
     public function setTeam(\IIA\WebServiceBundle\Entity\Team $team)
     {
         $this->team = $team;
-
         return $this;
     }
 
@@ -282,46 +141,6 @@ class User
     {
         return $this->team;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->typeUsers = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add typeUsers
-     *
-     * @param \IIA\WebServiceBundle\Entity\TypeUser $typeUsers
-     * @return User
-     */
-    public function addTypeUser(\IIA\WebServiceBundle\Entity\TypeUser $typeUsers)
-    {
-        $this->typeUsers[] = $typeUsers;
-
-        return $this;
-    }
-
-    /**
-     * Remove typeUsers
-     *
-     * @param \IIA\WebServiceBundle\Entity\TypeUser $typeUsers
-     */
-    public function removeTypeUser(\IIA\WebServiceBundle\Entity\TypeUser $typeUsers)
-    {
-        $this->typeUsers->removeElement($typeUsers);
-    }
-
-    /**
-     * Get typeUsers
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getTypeUsers()
-    {
-        return $this->typeUsers;
-    }
 
     /**
      * Add results
@@ -332,7 +151,6 @@ class User
     public function addResult(\IIA\WebServiceBundle\Entity\Result $results)
     {
         $this->results[] = $results;
-
         return $this;
     }
 
@@ -354,5 +172,38 @@ class User
     public function getResults()
     {
         return $this->results;
+    }
+
+    /**
+     * Add mcqs
+     *
+     * @param \IIA\WebServiceBundle\Entity\Mcq $mcqs
+     * @return User
+     */
+    public function addMcq(\IIA\WebServiceBundle\Entity\Mcq $mcqs)
+    {
+        $this->mcqs[] = $mcqs;
+
+        return $this;
+    }
+
+    /**
+     * Remove mcqs
+     *
+     * @param \IIA\WebServiceBundle\Entity\Mcq $mcqs
+     */
+    public function removeMcq(\IIA\WebServiceBundle\Entity\Mcq $mcqs)
+    {
+        $this->mcqs->removeElement($mcqs);
+    }
+
+    /**
+     * Get mcqs
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMcqs()
+    {
+        return $this->mcqs;
     }
 }

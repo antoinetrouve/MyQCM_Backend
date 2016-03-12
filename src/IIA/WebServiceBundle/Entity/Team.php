@@ -7,11 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Team
  *
- * @ORM\Table(name="team")
+ * @ORM\Table(name="Team")
  * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\TeamRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
-class Team
-{
+class Team {
     /**
      * @var int
      *
@@ -20,11 +20,11 @@ class Team
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
+    
     /**
-     * @var string
+     * @var name
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
 
@@ -64,38 +64,15 @@ class Team
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     * @return Team
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
      * Set createdAt
-     *
+     * @ORM\PrePersist
      * @param \DateTime $createdAt
      * @return Team
      */
     public function setCreatedAt($createdAt)
     {
-        $this->createdAt = $createdAt;
-
+        $this->createdAt = new \DateTime();
+		$this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -111,14 +88,13 @@ class Team
 
     /**
      * Set updatedAt
-     *
+     * @ORM\PreUpdate
      * @param \DateTime $updatedAt
      * @return Team
      */
     public function setUpdatedAt($updatedAt)
     {
-        $this->updatedAt = $updatedAt;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -148,7 +124,6 @@ class Team
     public function addMcq(\IIA\WebServiceBundle\Entity\Mcq $mcqs)
     {
         $this->mcqs[] = $mcqs;
-
         return $this;
     }
 
@@ -181,7 +156,6 @@ class Team
     public function addUser(\IIA\WebServiceBundle\Entity\User $users)
     {
         $this->users[] = $users;
-
         return $this;
     }
 
@@ -203,5 +177,28 @@ class Team
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Team
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }

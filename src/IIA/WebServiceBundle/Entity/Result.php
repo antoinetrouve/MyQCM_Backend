@@ -34,6 +34,20 @@ class Result
      * @ORM\Column(name="is_completed", type="boolean")
      */
     private $isCompleted;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="createdAt", type="datetime")
+     */
+    private $createdAt;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_At", type="datetime")
+     */
+    private $updatedAt;
 
     /**
     * @var \User
@@ -147,5 +161,51 @@ class Result
     public function getMcq()
     {
         return $this->mcq;
+    }
+
+    /**
+     * Set createdAt
+     * @ORM\PrePersist
+     * @param \DateTime $createdAt
+     * @return Result
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->created_at = new \DateTime();
+        $this->updatedAt = new \DateTime();
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt
+     * @ORM\PreUpdate
+     * @param \DateTime $updatedAt
+     * @return Result
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updated_at = new \DateTime();
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 }

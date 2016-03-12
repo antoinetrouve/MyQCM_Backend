@@ -3,12 +3,14 @@
 namespace IIA\WebServiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\PrePersist;
 
 /**
  * Answer
  *
  * @ORM\Table(name="answer")
  * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\AnswerRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Answer
 {
@@ -77,7 +79,6 @@ class Answer
     public function setValue($value)
     {
         $this->value = $value;
-
         return $this;
     }
 
@@ -100,7 +101,6 @@ class Answer
     public function setIsValid($isValid)
     {
         $this->isValid = $isValid;
-
         return $this;
     }
 
@@ -116,14 +116,14 @@ class Answer
 
     /**
      * Set createdAt
-     *
+     * @PrePersist
      * @param \DateTime $createdAt
      * @return Answer
      */
     public function setCreatedAt($createdAt)
     {
-        $this->createdAt = $createdAt;
-
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -139,14 +139,13 @@ class Answer
 
     /**
      * Set updatedAt
-     *
+     * @ORM\PreUpdate
      * @param \DateTime $updatedAt
      * @return Answer
      */
     public function setUpdatedAt($updatedAt)
     {
-        $this->updatedAt = $updatedAt;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -169,7 +168,6 @@ class Answer
     public function setQuestion(\IIA\WebServiceBundle\Entity\Question $question = null)
     {
         $this->question = $question;
-
         return $this;
     }
 

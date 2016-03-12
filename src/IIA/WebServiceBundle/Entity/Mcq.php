@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="mcq")
  * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\McqRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Mcq
 {
@@ -24,7 +25,7 @@ class Mcq
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
 
@@ -36,22 +37,22 @@ class Mcq
     private $isActif;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="countdown", type="time")
+     * @var \int
+     * Compteur en seconde
+     * @ORM\Column(name="countdown", type="integer")
      */
     private $countdown;
 
     /**
      * @var \DateTime
-     *
+     * Date de début de diffusion
      * @ORM\Column(name="diffDeb", type="datetime")
      */
     private $diffDeb;
 
     /**
      * @var \DateTime
-     *
+     * Date de fin de diffusion
      * @ORM\Column(name="diffEnd", type="datetime")
      */
     private $diffEnd;
@@ -71,7 +72,7 @@ class Mcq
     private $updatedAt;
 
     /**
-    * @ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\Question", mappedBy="mcq")
+    * @ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\Question", mappedBy="mcq", cascade={"remove"})
     */
     private $questions;
 
@@ -216,14 +217,14 @@ class Mcq
 
     /**
      * Set createdAt
-     *
+     * @ORM\PrePersist
      * @param \DateTime $createdAt
      * @return Mcq
      */
     public function setCreatedAt($createdAt)
     {
-        $this->createdAt = $createdAt;
-
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -239,14 +240,13 @@ class Mcq
 
     /**
      * Set updatedAt
-     *
+     * @ORM\PreUpdate
      * @param \DateTime $updatedAt
      * @return Mcq
      */
     public function setUpdatedAt($updatedAt)
     {
-        $this->updatedAt = $updatedAt;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
