@@ -1,0 +1,4 @@
+users : 
+  type: rest
+  resource:     "IIAWebServiceBundle:UserRest"
+  name_prefix:  api_
