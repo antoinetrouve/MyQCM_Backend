@@ -3,6 +3,8 @@
 namespace IIA\WebServiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * Question
@@ -10,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="question")
  * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\QuestionRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @ExclusionPolicy("All")
  */
 class Question
 {
@@ -19,6 +22,7 @@ class Question
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Expose()
      */
     private $id;
 
@@ -26,6 +30,7 @@ class Question
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Expose()
      */
     private $name;
 
@@ -33,6 +38,7 @@ class Question
      * @var \DateTime
      *
      * @ORM\Column(name="createdAt", type="datetime")
+     * @Expose()
      */
     private $createdAt;
 
@@ -40,16 +46,19 @@ class Question
      * @var \DateTime
      *
      * @ORM\Column(name="updated_At", type="datetime")
+     * @Expose()
      */
     private $updatedAt;
 
     /**
     * @ORM\OneToOne(targetEntity="IIA\WebServiceBundle\Entity\Media", cascade={"remove"})
+    * 
     */
     private $media;
 
     /**
     * @ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\Answer", mappedBy="question", cascade={"remove"})
+    * @Expose()
     */
     private $answers;
 

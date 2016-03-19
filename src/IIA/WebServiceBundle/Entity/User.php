@@ -5,6 +5,8 @@ namespace IIA\WebServiceBundle\Entity;
 use FOS\UserBundle\Model\User as BaseUser;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * User
@@ -12,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="fos_user")
  * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks()
+ * 
+ * @ExclusionPolicy("all")
  */
 class User extends BaseUser
 {
@@ -21,6 +25,8 @@ class User extends BaseUser
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * 
+     * @Expose
      */
     protected $id;
 
@@ -28,6 +34,7 @@ class User extends BaseUser
     * @var \Team
     * 
     * @ORM\ManyToOne(targetEntity="IIA\WebServiceBundle\Entity\Team", inversedBy="users")
+    * 
     */
     private $team;
     
@@ -35,6 +42,8 @@ class User extends BaseUser
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
+     * 
+     * @Expose
      */
     private $createdAt;
     
@@ -42,18 +51,22 @@ class User extends BaseUser
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime")
+     * @Expose()
+     * 
      */
     private $updatedAt;
     
 
     /**
     * @ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\Result", mappedBy="user")
+    * 
     */
     private $results;
     
     /**
      * @ORM\ManyToMany(targetEntity="IIA\WebServiceBundle\Entity\Mcq", cascade={"persist"})
      * 
+     * @Expose
      */
     private $mcqs;
 
@@ -183,7 +196,6 @@ class User extends BaseUser
     public function addMcq(\IIA\WebServiceBundle\Entity\Mcq $mcqs)
     {
         $this->mcqs[] = $mcqs;
-
         return $this;
     }
 

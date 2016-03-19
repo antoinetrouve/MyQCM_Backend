@@ -2,3 +2,23 @@ users :
   type: rest
   resource:     "IIAWebServiceBundle:UserRest"
   name_prefix:  api_
+  
+answers : 
+  type: rest
+  resource:     "IIAWebServiceBundle:AnswerRest"
+  name_prefix:  api_
+  
+categories : 
+  type: rest
+  resource:     "IIAWebServiceBundle:CategoryRest"
+  name_prefix:  api_
+  
+questions : 
+  type: rest
+  resource:     "IIAWebServiceBundle:QuestionRest"
+  name_prefix:  api_
+  
+mcqs : 
+  type: rest
+  resource:     "IIAWebServiceBundle:McqRest"
+  name_prefix:  api_

@@ -4,6 +4,8 @@ namespace IIA\WebServiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\PrePersist;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * Answer
@@ -11,6 +13,8 @@ use Doctrine\ORM\Mapping\PrePersist;
  * @ORM\Table(name="answer")
  * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\AnswerRepository")
  * @ORM\HasLifecycleCallbacks()
+ * 
+ * @ExclusionPolicy("all")
  */
 class Answer
 {
@@ -20,6 +24,8 @@ class Answer
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * 
+     * @Expose
      */
     private $id;
 
@@ -27,6 +33,8 @@ class Answer
      * @var string
      *
      * @ORM\Column(name="value", type="string", length=255)
+     * 
+     * @Expose
      */
     private $value;
 
@@ -34,6 +42,8 @@ class Answer
      * @var bool
      *
      * @ORM\Column(name="is_Valid", type="boolean")
+     * 
+     * @Expose
      */
     private $isValid;
 
@@ -56,6 +66,8 @@ class Answer
     * 
     * @ORM\ManyToOne(targetEntity="IIA\WebServiceBundle\Entity\Question", inversedBy="answers")
     * @ORM\JoinColumn(nullable=false)
+    * 
+    * @Expose
     */
     private $question;
 

@@ -3,12 +3,14 @@
 namespace IIA\WebServiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 
 /**
  * Result
  *
  * @ORM\Table(name="result")
  * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\ResultRepository")
+ * @ExclusionPolicy("All")
  */
 class Result
 {
