@@ -3,6 +3,8 @@
 namespace IIA\WebServiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * Mcq
@@ -10,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="mcq")
  * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\McqRepository")
  * @ORM\HasLifecycleCallbacks()
+ * 
+ * @ExclusionPolicy("all")
  */
 class Mcq
 {
@@ -19,6 +23,8 @@ class Mcq
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * 
+     * @Expose
      */
     private $id;
 
@@ -26,6 +32,8 @@ class Mcq
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * 
+     * @Expose
      */
     private $name;
 
@@ -33,6 +41,7 @@ class Mcq
      * @var bool
      *
      * @ORM\Column(name="is_Actif", type="boolean")
+     * @Expose
      */
     private $isActif;
 
@@ -40,6 +49,7 @@ class Mcq
      * @var \int
      * Compteur en seconde
      * @ORM\Column(name="countdown", type="integer")
+     * @Expose
      */
     private $countdown;
 
@@ -47,6 +57,7 @@ class Mcq
      * @var \DateTime
      * Date de début de diffusion
      * @ORM\Column(name="diffDeb", type="datetime")
+     * @Expose
      */
     private $diffDeb;
 
@@ -54,6 +65,7 @@ class Mcq
      * @var \DateTime
      * Date de fin de diffusion
      * @ORM\Column(name="diffEnd", type="datetime")
+     * @Expose
      */
     private $diffEnd;
 
@@ -61,6 +73,7 @@ class Mcq
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
+     * @Expose
      */
     private $createdAt;
 
@@ -68,11 +81,13 @@ class Mcq
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime")
+     * @Expose()
      */
     private $updatedAt;
 
     /**
     * @ORM\OneToMany(targetEntity="IIA\WebServiceBundle\Entity\Question", mappedBy="mcq", cascade={"remove"})
+    * @Expose()
     */
     private $questions;
 
@@ -81,6 +96,7 @@ class Mcq
     * 
     * @ORM\ManyToOne(targetEntity="IIA\WebServiceBundle\Entity\Category", inversedBy="mcqs")
     * @ORM\JoinColumn(nullable=false)
+    * @Expose()
     */
     private $category;
 
