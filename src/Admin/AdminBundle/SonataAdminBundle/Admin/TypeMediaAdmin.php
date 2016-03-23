@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Validator\ErrorElement;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 class TypeMediaAdmin extends Admin
 {
@@ -35,6 +36,7 @@ class TypeMediaAdmin extends Admin
             ->addIdentifier('name')
             ->add('createdAt')
             ->add('updatedAt')
+            ->add('medias', null, array('associated_property' => 'name'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'view' => array(),
@@ -43,5 +45,15 @@ class TypeMediaAdmin extends Admin
                 )
             ))
         ;
+    }
+
+    protected function configureShowFields(ShowMapper $showMapper)
+    {
+    	$showMapper
+    	->add('name')
+    	->add('createdAt')
+    	->add('updatedAt')
+    	->add('medias', null, array('associated_property' => 'name'))
+    	;
     }
 }

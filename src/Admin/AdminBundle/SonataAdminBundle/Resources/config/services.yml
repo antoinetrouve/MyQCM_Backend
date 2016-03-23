@@ -4,7 +4,7 @@ services:
     Admin.AdminBundle.SonataAdminBundle.Admin.category:
         class: Admin\AdminBundle\SonataAdminBundle\Admin\CategoryAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: QCM, label: Categories }
+            - { name: sonata.admin, manager_type: orm, group: QUESTIONNAIRE, label: Categories }
         arguments:
             - ~
             - IIA\WebServiceBundle\Entity\Category
@@ -13,7 +13,7 @@ services:
     Admin.AdminBundle.SonataAdminBundle.Admin.answer:
         class: Admin\AdminBundle\SonataAdminBundle\Admin\AnswerAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: QCM, label: "Reponses" }
+            - { name: sonata.admin, manager_type: orm, group: QUESTIONNAIRE, label: Reponses }
         arguments:
             - ~
             - IIA\WebServiceBundle\Entity\Answer
@@ -23,7 +23,7 @@ services:
     Admin.AdminBundle.SonataAdminBundle.Admin.media:
         class: Admin\AdminBundle\SonataAdminBundle\Admin\MediaAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: MEDIAS, label: Medias }
+            - { name: sonata.admin, manager_type: orm, group: MEDIA, label: Medias }
         arguments:
             - ~
             - IIA\WebServiceBundle\Entity\Media
@@ -32,7 +32,7 @@ services:
     Admin.AdminBundle.SonataAdminBundle.Admin.typemedia:
         class: Admin\AdminBundle\SonataAdminBundle\Admin\TypeMediaAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: MEDIAS, label: "Type Medias" }
+            - { name: sonata.admin, manager_type: orm, group: MEDIA, label: "Type Medias" }
         arguments:
             - ~
             - IIA\WebServiceBundle\Entity\TypeMedia

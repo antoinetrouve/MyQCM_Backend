@@ -165,4 +165,8 @@ class TypeMedia
     {
         return $this->medias;
     }
+    
+    public function __toString(){
+    	return (string)$this->name;
+    }
 }
