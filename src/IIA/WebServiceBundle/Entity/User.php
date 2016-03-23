@@ -34,7 +34,6 @@ class User extends BaseUser
     * @var \Team
     * 
     * @ORM\ManyToOne(targetEntity="IIA\WebServiceBundle\Entity\Team", inversedBy="users")
-    * 
     */
     private $team;
     

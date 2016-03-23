@@ -1,0 +1,39 @@
+services:
+
+    #GESTION DES QCM
+    Admin.AdminBundle.SonataAdminBundle.Admin.category:
+        class: Admin\AdminBundle\SonataAdminBundle\Admin\CategoryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: QCM, label: Categories }
+        arguments:
+            - ~
+            - IIA\WebServiceBundle\Entity\Category
+            - 'AdminAdminBundleSonataAdminBundle:CategoryAdmin'
+ 
+    Admin.AdminBundle.SonataAdminBundle.Admin.answer:
+        class: Admin\AdminBundle\SonataAdminBundle\Admin\AnswerAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: QCM, label: "Reponses" }
+        arguments:
+            - ~
+            - IIA\WebServiceBundle\Entity\Answer
+            - 'AdminAdminBundleSonataAdminBundle:AnswerAdmin'
+
+    #GESTION DES MEDIAS
+    Admin.AdminBundle.SonataAdminBundle.Admin.media:
+        class: Admin\AdminBundle\SonataAdminBundle\Admin\MediaAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: MEDIAS, label: Medias }
+        arguments:
+            - ~
+            - IIA\WebServiceBundle\Entity\Media
+            - 'AdminAdminBundleSonataAdminBundle:MediaAdmin'
+
+    Admin.AdminBundle.SonataAdminBundle.Admin.typemedia:
+        class: Admin\AdminBundle\SonataAdminBundle\Admin\TypeMediaAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: MEDIAS, label: "Type Medias" }
+        arguments:
+            - ~
+            - IIA\WebServiceBundle\Entity\TypeMedia
+            - 'AdminAdminBundleSonataAdminBundle:TypeMediaAdmin'

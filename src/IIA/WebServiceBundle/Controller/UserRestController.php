@@ -12,7 +12,6 @@ class UserRestController extends Controller
 	public function getUserAction($username){
 		$user = $this->getDoctrine()->getRepository('IIAWebServiceBundle:User')->findOneByUsername($username);
 		$userJson = $this->RemoveDuplicateMcq($user);
-		
 		if(!is_object($userJson)){
 			throw $this->createNotFoundException();
 		}
@@ -36,27 +35,29 @@ class UserRestController extends Controller
 		
 		$team = new Team();
 		$team = $user->getTeam();
-		
-		//Get Mcq's id in team's user
-		foreach ($team->getMcqs() as $mcq)
+		if ($team != null)
 		{
-			//Insert Mcq's id in team's user in array
-			array_push($mcqTeam, $mcq->getId());
+			//Get Mcq's id in team's user
+			foreach ($team->getMcqs() as $mcq)
+			{
+				//Insert Mcq's id in team's user in array
+				array_push($mcqTeam, $mcq->getId());
+			}
+			
+			//Get Mcq's id in team's user
+			foreach ($user->getMcqs() as $mcq){
+				array_push($mcqUser, $mcq->getId());
+			}
+			
+			/*Manage difference between two arrays*/
+			//Return list mcq's id missing in mcqUser Array
+			$diff = array_diff($mcqTeam, $mcqUser);
+
+			//Add Mcq in user 
+			foreach ($diff as $mcq_id){
+				$user->AddMcq($this->getDoctrine()->getRepository('IIAWebServiceBundle:Mcq')->findOneById($mcq_id));
+			}
 		}
-		
-		//Get Mcq's id in team's user
-		foreach ($user->getMcqs() as $mcq){
-			array_push($mcqUser, $mcq->getId());
-		}
-		
-		/*Manage difference between two arrays*/
-		//Return list mcq's id missing in mcqUser Array
-		$diff = array_diff($mcqTeam, $mcqUser);
-		//Add Mcq in user 
-		foreach ($diff as $mcq_id){
-			$user->AddMcq($this->getDoctrine()->getRepository('IIAWebServiceBundle:Mcq')->findOneById($mcq_id));
-		}
-		
 		return $user;
 	}
 }
