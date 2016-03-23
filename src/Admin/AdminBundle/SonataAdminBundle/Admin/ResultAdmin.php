@@ -8,29 +8,32 @@ use Sonata\AdminBundle\Validator\ErrorElement;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class AnswerAdmin extends Admin
+class ResultAdmin extends Admin
 {
+	//score, isCompleted, createdAt, updatedAt, user, mcq
 	// setup the default sort column and order
 	protected $datagridValues = array(
 			'_sort_order' => 'ASC',
-			'_sort_by' => 'value'
+			'_sort_by' => 'score'
 	);
 	
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('value')
-			->add('isValid')
-			->add('question', null, array('label' => 'Question'))
+			->add('score')
+			->add('user', null, array('label' => 'Utilisateur associe'))
+			->add('mcq', null, array('label' => 'Questionnaire associee'))
+			->add('isCompleted', null, array('label' => 'Complete ou non'))
 		;
 	}
 	
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
-			->add('value')
-			->add('isValid')
-			->add('question', null, array('label' => 'Question associee'))
+			->add('score')
+			->add('user', null, array('label' => 'Utilisateur'))
+			->add('mcq', null, array('label' => 'Questionnaire'))
+			->add('isCompleted', null, array('label' => 'Complete ou non'))
 			->add('createdAt')
 			->add('updatedAt')
 		;
@@ -39,9 +42,10 @@ class AnswerAdmin extends Admin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-			->addIdentifier('value')
-			->add('isValid')
-			->add('question', null, array('label' => 'Question'))
+			->add('score')
+			->addIdentifier('user', null, array('associated_property' => 'username'))
+			->addIdentifier('mcq', null, array('associated_property' => 'name'))
+			->add('isCompleted')
 			->add('createdAt')
 			->add('updatedAt')
 			->add('_action', 'actions', array(
@@ -57,9 +61,10 @@ class AnswerAdmin extends Admin
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
-			->add('value')
-			->add('isValid')
-			->add('question', null, array('label' => 'Question'))
+			->add('score')
+			->add('user', null, array('associated_property' => 'username'))
+			->add('mcq', null, array('associated_property' => 'name'))
+			->add('isCompleted')
 			->add('createdAt')
 			->add('updatedAt')
 		;

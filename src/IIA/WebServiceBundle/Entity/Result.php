@@ -4,12 +4,14 @@ namespace IIA\WebServiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 
 /**
  * Result
  *
  * @ORM\Table(name="result")
  * @ORM\Entity(repositoryClass="IIA\WebServiceBundle\Repository\ResultRepository")
+ * @HasLifecycleCallbacks()
  * @ExclusionPolicy("All")
  */
 class Result
@@ -40,7 +42,7 @@ class Result
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="createdAt", type="datetime")
+     * @ORM\Column(name="created_At", type="datetime")
      */
     private $createdAt;
     
@@ -173,7 +175,7 @@ class Result
      */
     public function setCreatedAt($createdAt)
     {
-        $this->created_at = new \DateTime();
+        $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
         return $this;
     }
@@ -196,7 +198,7 @@ class Result
      */
     public function setUpdatedAt($updatedAt)
     {
-        $this->updated_at = new \DateTime();
+        $this->updatedAt = new \DateTime();
 
         return $this;
     }
@@ -209,5 +211,13 @@ class Result
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+    
+    public function __toString(){
+    	
+    	if ($this->getUser() != null){
+    		return "resultat de l'utilsateur " . $this->getUser() . " pour le questionnaire " . $this->getMcq()->getName();
+    	}
+    	return (string)$this->getScore();
     }
 }

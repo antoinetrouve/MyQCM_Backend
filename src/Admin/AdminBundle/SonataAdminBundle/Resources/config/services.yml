@@ -1,6 +1,15 @@
 services:
 
     #GESTION DES QCM
+    Admin.AdminBundle.SonataAdminBundle.Admin.mcq:
+        class: Admin\AdminBundle\SonataAdminBundle\Admin\McqAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: QUESTIONNAIRE, label: Questionnaires }
+        arguments:
+            - ~
+            - IIA\WebServiceBundle\Entity\Mcq
+            - 'AdminAdminBundleSonataAdminBundle:McqAdmin'
+
     Admin.AdminBundle.SonataAdminBundle.Admin.category:
         class: Admin\AdminBundle\SonataAdminBundle\Admin\CategoryAdmin
         tags:
@@ -9,11 +18,21 @@ services:
             - ~
             - IIA\WebServiceBundle\Entity\Category
             - 'AdminAdminBundleSonataAdminBundle:CategoryAdmin'
- 
+
+    #GESTION DES QUESTIONS/REPONSES
+    Admin.AdminBundle.SonataAdminBundle.Admin.question:
+        class: Admin\AdminBundle\SonataAdminBundle\Admin\QuestionAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: QUESTION/REPONSE, label: Questions }
+        arguments:
+            - ~
+            - IIA\WebServiceBundle\Entity\Question
+            - 'AdminAdminBundleSonataAdminBundle:QuestionAdmin'
+
     Admin.AdminBundle.SonataAdminBundle.Admin.answer:
         class: Admin\AdminBundle\SonataAdminBundle\Admin\AnswerAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: QUESTIONNAIRE, label: Reponses }
+            - { name: sonata.admin, manager_type: orm, group: QUESTION/REPONSE, label: Reponses }
         arguments:
             - ~
             - IIA\WebServiceBundle\Entity\Answer
@@ -37,3 +56,32 @@ services:
             - ~
             - IIA\WebServiceBundle\Entity\TypeMedia
             - 'AdminAdminBundleSonataAdminBundle:TypeMediaAdmin'
+
+    #GESTION DES RESULTATS
+    Admin.AdminBundle.SonataAdminBundle.Admin.result:
+        class: Admin\AdminBundle\SonataAdminBundle\Admin\ResultAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: RESULTAT, label: Resultats }
+        arguments:
+            - ~
+            - IIA\WebServiceBundle\Entity\Result
+            - 'AdminAdminBundleSonataAdminBundle:ResultAdmin'
+
+    #GESTION DES COMPTES UTILISATEURS
+    Admin.AdminBundle.SonataAdminBundle.Admin.team:
+        class: Admin\AdminBundle\SonataAdminBundle\Admin\TeamAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: COMPTE UTILISATEUR, label: Groupes }
+        arguments:
+            - ~
+            - IIA\WebServiceBundle\Entity\Team
+            - 'AdminAdminBundleSonataAdminBundle:TeamAdmin'
+
+    Admin.AdminBundle.SonataAdminBundle.Admin.user:
+        class: Admin\AdminBundle\SonataAdminBundle\Admin\UserAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: COMPTE UTILISATEUR, label: Utilisateurs }
+        arguments:
+            - ~
+            - IIA\WebServiceBundle\Entity\User
+            - 'AdminAdminBundleSonataAdminBundle:UserAdmin'

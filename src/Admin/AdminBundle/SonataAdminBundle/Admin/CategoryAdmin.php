@@ -6,21 +6,20 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Validator\ErrorElement;
 use Sonata\AdminBundle\Form\FormMapper;
-use IIA\WebServiceBundle\Entity\Category;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 class CategoryAdmin extends Admin
 {
 	// setup the default sort column and order
     protected $datagridValues = array(
         '_sort_order' => 'ASC',
-        '_sort_by' => 'name'
+        '_sort_by' => 'name',
     );
  
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             ->add('name')
-            ->add('slug')
         ;
     }
  
@@ -28,6 +27,9 @@ class CategoryAdmin extends Admin
     {
         $datagridMapper
             ->add('name')
+            ->add('createdAt')
+            ->add('updatedAt')
+            ->add('mcqs', null, array('label' => 'questionnaires associes'))
         ;
     }
  
@@ -35,7 +37,26 @@ class CategoryAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('name')
-            ->add('slug')
+            ->add('createdAt')
+            ->add('updatedAt')
+            ->add('mcqs', null, array('associated_property' => 'name'))
+            ->add('_action', 'actions', array(
+            		'actions' => array(
+            			'view' => array(),
+            			'edit' => array(),
+            			'delete' => array(),
+            		)
+            ))
         ;
+    }
+    
+    protected function configureShowFields(ShowMapper $showMapper)
+    {
+    	$showMapper
+	    	->add('name')
+	    	->add('createdAt')
+	    	->add('updatedAt')
+	    	->add('mcqs', null, array('associated_property' => 'name'))
+    	;
     }
 }
