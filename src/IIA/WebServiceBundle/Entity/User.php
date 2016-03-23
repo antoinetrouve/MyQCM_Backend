@@ -217,4 +217,8 @@ class User extends BaseUser
     {
         return $this->mcqs;
     }
+    
+    public function __toString(){
+    	return (string)$this->getUsername();
+    }
 }
