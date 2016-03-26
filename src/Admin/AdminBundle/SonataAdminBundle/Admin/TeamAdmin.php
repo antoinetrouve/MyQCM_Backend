@@ -21,7 +21,6 @@ class TeamAdmin extends Admin
 	{
 		$formMapper
 			->add('name')
-			->add('users', null, array('label' => 'Utilisateur a associe du groupe'))
 			->add('mcqs', null, array('label' => 'Questionnaire a associee au groupe'))
 		;
 	}
