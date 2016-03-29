@@ -8,7 +8,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
 /**
  * 
  * @author antoine Trouvé
- * Class to transform in an object a user's answers list sended by json flow 
+ * Class to transform a user's answers list json flow in an object
  */
 class ResultJson {
 
