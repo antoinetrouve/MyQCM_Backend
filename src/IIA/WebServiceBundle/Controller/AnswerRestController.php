@@ -9,14 +9,18 @@ use IIA\WebServiceBundle\Entity\Question;
 
 class AnswerRestController extends Controller
 {
-	public function getAnswerAction($question_id){
-		 $question = new Question();
-		 $question = 
-		$answers = $this->getDoctrine()->getRepository('IIAWebServiceBundle:Answer')->findByQuestion_id($question_id);
-
+	/**
+	 * Get list of question's answer
+	 * @param integer $question_id
+	 */
+	public function getAnswersquestionAction($question_id){
+		$answers = $this->getDoctrine()->getRepository('IIAWebServiceBundle:Answer')->findByQuestion($question_id);
 		return $answers;
 	}
 	
+	/**
+	 * Get all answers
+	 */
 	public function getAnswersAction(){
 		$answers = $this->getDoctrine()->getRepository('IIAWebServiceBundle:Answer')->findAll();
 		return $answers;

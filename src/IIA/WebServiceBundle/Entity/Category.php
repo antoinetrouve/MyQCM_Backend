@@ -166,7 +166,12 @@ class Category
      */
     public function removeMcq(\IIA\WebServiceBundle\Entity\Mcq $mcqs)
     {
-        $this->mcqs->removeElement($mcqs);
+     	foreach ($this->mcqs as $k => $m) {
+     		if ($m->getId() == $mcqs->getId()) {
+     			unset($this->mcqs[$k]);
+     		}
+     	}
+        //$this->mcqs->removeElement($mcqs);
     }
 
     /**
@@ -177,5 +182,9 @@ class Category
     public function getMcqs()
     {
         return $this->mcqs;
+    }
+    
+    public function __toString(){
+    	return (string)$this->name;
     }
 }

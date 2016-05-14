@@ -34,7 +34,6 @@ class User extends BaseUser
     * @var \Team
     * 
     * @ORM\ManyToOne(targetEntity="IIA\WebServiceBundle\Entity\Team", inversedBy="users")
-    * 
     */
     private $team;
     
@@ -217,5 +216,9 @@ class User extends BaseUser
     public function getMcqs()
     {
         return $this->mcqs;
+    }
+    
+    public function __toString(){
+    	return (string)$this->getUsername();
     }
 }

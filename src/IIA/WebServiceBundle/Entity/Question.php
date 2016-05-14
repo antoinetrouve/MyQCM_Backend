@@ -256,14 +256,14 @@ class Question
 
     /**
      * Set createdAt
-     *
+     * @ORM\PrePersist()
      * @param \DateTime $createdAt
      * @return Question
      */
     public function setCreatedAt($createdAt)
     {
-        $this->createdAt = $createdAt;
-
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -279,13 +279,13 @@ class Question
 
     /**
      * Set updatedAt
-     *
+     * @ORM\PreUpdate()
      * @param \DateTime $updatedAt
      * @return Question
      */
     public function setUpdatedAt($updatedAt)
     {
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = new \DateTime();
 
         return $this;
     }
@@ -298,5 +298,9 @@ class Question
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+    
+    public function __toString(){
+    	return (string)$this->name;
     }
 }

@@ -371,4 +371,8 @@ class Mcq
     {
         return $this->results;
     }
+    
+    public function __toString(){
+    	return (string)$this->name;
+    }
 }
