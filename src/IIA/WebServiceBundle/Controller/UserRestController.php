@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use IIA\WebServiceBundle\Entity\User;
 use IIA\WebServiceBundle\Entity\Team;
+use Symfony\Component\Security\Core\User\InMemoryUserProvider;
 
 class UserRestController extends Controller
 {
@@ -21,6 +22,25 @@ class UserRestController extends Controller
 	public function getUsersAction(){
 		$users = $this->getDoctrine()->getRepository('IIAWebServiceBundle:User')->findAll();
 		return $users;
+	}
+	
+	/**
+	 * Validate user authentification
+	 * @return boolean
+	 */
+	public function postUserauthAction(){
+		$factory = $this->get('security.encoder_factory');
+		$login = $this->getRequest()->get('login');
+		$pwd = $this->getRequest()->get('password');
+		$user = $this->getDoctrine()->getRepository('IIAWebServiceBundle:User')->findByUsername($login);
+		if (is_null($user)){
+			$bool = false;
+			return $bool;
+		}
+		$encoder = $factory->getEncoder($user);
+		$bool = ($encoder->isPasswordValid($user->getPassword(),$pwd,$user->getSalt())) ? "true" : "false";
+		
+		return $bool;
 	}
 	
 	/**
