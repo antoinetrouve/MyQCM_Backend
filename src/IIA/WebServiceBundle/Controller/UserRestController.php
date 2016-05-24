@@ -4,9 +4,11 @@ namespace IIA\WebServiceBundle\Controller;
 use FOS\RestBundle\Controller\Annotations\View;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Encoder\EncoderFactory;
+use Symfony\Component\Security\Core\User\InMemoryUserProvider;
 use IIA\WebServiceBundle\Entity\User;
 use IIA\WebServiceBundle\Entity\Team;
-use Symfony\Component\Security\Core\User\InMemoryUserProvider;
+
 
 class UserRestController extends Controller
 {
@@ -29,16 +31,19 @@ class UserRestController extends Controller
 	 * @return boolean
 	 */
 	public function postUserauthAction(){
-		$factory = $this->get('security.encoder_factory');
 		$login = $this->getRequest()->get('login');
 		$pwd = $this->getRequest()->get('password');
-		$user = $this->getDoctrine()->getRepository('IIAWebServiceBundle:User')->findByUsername($login);
+
+		$user_manager = $this->get('fos_user.user_manager');
+		$factory = $this->get('security.encoder_factory');
+		$user = $user_manager->findUserByUsername($login);
+
 		if (is_null($user)){
 			$bool = false;
 			return $bool;
 		}
 		$encoder = $factory->getEncoder($user);
-		$bool = ($encoder->isPasswordValid($user->getPassword(),$pwd,$user->getSalt())) ? "true" : "false";
+		$bool = ($encoder->isPasswordValid($user->getPassword(),$pwd,$user->getSalt())) ? true : false;
 		
 		return $bool;
 	}
