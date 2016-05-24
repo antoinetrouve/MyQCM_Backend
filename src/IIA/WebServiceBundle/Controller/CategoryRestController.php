@@ -39,68 +39,78 @@ class CategoryRestController extends Controller
 		$mcqs = array();
 		$tempMcqs = array();
 		$team = new Team();
-		// Jeoff = $teamUser = array();
-	
+		$tempMcq = new Mcq();
+
 		// get User by id 
 		$user = $this->getDoctrine()->getRepository('IIAWebServiceBundle:User')->findOneByid($userId);
 		//get User Team
 		$team = $user->getTeam();
-		
+
 		if ($team != null)
 		{
 			$tempMcqs = self::getMcqList($team,$user);
+			foreach ($tempMcqs as $mcq_id){
+				$tempMcq = $this->getDoctrine()->getRepository('IIAWebServiceBundle:Mcq')->findOneById($mcq_id);
+				array_push($mcqs, $tempMcq);
+			}
 		}
 		else 
 		{
 			//Get Mcq's user
 			foreach ($user->getMcqs() as $mcq){
-				array_push($tempMcqs, $mcq);
+				array_push($mcqs, $mcq);
 			}
 		}
 		
-		if($tempMcqs != null)
+		if($mcqs != null)
 		{
-			$categories = self::getCategoryList($tempMcqs);
+			$categories = self::getCategoryList($mcqs);
 		}
 		
 		return $categories;
 	}
 	
-	private function getMcqList($team,$user)
+	/**
+	 * Get user's mcq
+	 * @param Team $team
+	 * @param User $user
+	 * @return mcq's id list
+	 */
+	public static function getMcqList($team,$user)
 	{
-		$tempMcqs = array();
+		$mcqs = array();
 		$teamMcqs = array();
 		$userMcqs = array();
 		$diff = array();
 		$temp = array();
 
-		//Get Mcq's id in team's user
+		//Get Mcq's id in team to insert into a temp list
 		foreach ($team->getMcqs() as $mcq)
 		{
-			//Insert Mcq's id in team's user in array
+			//Insert Mcq's id in temporary list
 			array_push($teamMcqs, $mcq->getId());
 		}
 		
-		//Get Mcq's id in team's user
+		//Get Mcq's id in user to insert into a temp list
 		foreach ($user->getMcqs() as $mcq){
 			array_push($userMcqs, $mcq->getId());
 		}
 		
-			
 		//Return list id mcqs for the User
 		$temp = array_merge($userMcqs,$teamMcqs);
 		$diff = array_unique($temp);
 			
 		//Add mcq in tempo list
-		foreach ($diff as $mcq_id){
+		/*foreach ($diff as $mcq_id){
 			$tempMcq = $this->getDoctrine()->getRepository('IIAWebServiceBundle:Mcq')->findOneById($mcq_id);
-			array_push($tempMcqs, $tempMcq);
-		}
+			array_push($mcqs, $tempMcq);
+		}*/
 		
-		return $tempMcqs;
+		//return $mcqs;
+		return $diff;
 	}
 	
-	private function getCategoryList($mcqs)
+	public function getCategoryList($mcqs)
 	{
 		$categories = array();
 		$tempCategoryIds = array();
