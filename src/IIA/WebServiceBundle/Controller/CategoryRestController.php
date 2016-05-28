@@ -34,12 +34,13 @@ class CategoryRestController extends Controller
 		return $categories;
 	}
 	
-	public function getCategoriesuserAction($userId){
+	public function postCategoriesuserAction(){
 		$categories = array();
 		$mcqs = array();
 		$tempMcqs = array();
 		$team = new Team();
 		$tempMcq = new Mcq();
+		$userId = $this->getRequest()->get('userId');
 
 		// get User by id 
 		$user = $this->getDoctrine()->getRepository('IIAWebServiceBundle:User')->findOneByid($userId);

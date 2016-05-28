@@ -8,19 +8,57 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\User\InMemoryUserProvider;
 use IIA\WebServiceBundle\Entity\User;
 use IIA\WebServiceBundle\Entity\Team;
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use IIA\WebServiceBundle\EntityJson\UserJson;
 
 
 class UserRestController extends Controller
 {
-	public function getUserAction($username){
-		$user = $this->getDoctrine()->getRepository('IIAWebServiceBundle:User')->findOneByUsername($username);
-		$userJson = $this->RemoveDuplicateMcq($user);
-		if(!is_object($userJson)){
+	/**
+	 * User flow information
+	 * @return json
+	 */
+	public function postUserinformationAction(){
+		$username = $this->getRequest()->get('username');
+		$temp = $this->getDoctrine()->getRepository('IIAWebServiceBundle:User')->findOneByUsername($username);
+		
+		$user = $this->RemoveDuplicateMcq($temp);
+		if(!is_object($user)){
 			throw $this->createNotFoundException();
 		}
+		
+		//Create user with specific information to create json flow
+		$userJson = new UserJson();
+		$userJson->setId($user->getId());
+		$userJson->setUsername($user->getUsername());
+		$userJson->setEmail($user->getEmail());
+		$userJson->setLastLogin($user->getLastLogin());
+		$userJson->setCreatedAt($user->getCreatedAt());
+		$userJson->setUpdatedAt($user->getUpdatedAt());
+		
 		return $userJson;
 	}
 	
+	/**
+	 * Not used
+	 * @param string $username
+	 */
+	public function postUserProfilAction($username){
+		$username = $this->getRequest()->get('username');
+		$temp = $this->getDoctrine()->getRepository('IIAWebServiceBundle:User')->findOneByUsername($username);
+		$user = new User();
+		$user->setUsername($temp->getUsername());
+		$user->setEmail($temp->getEmail());
+		$user->setLastLogin($temp->getLastLogin());
+		$user->setCreatedAt($temp->getCreatedAt());
+		$user->setUpdatedAt($temp->getUpdatedAt());
+		return $user;
+	}
+	
+	/**
+	 * All users and their information
+	 * @return json
+	 */
 	public function getUsersAction(){
 		$users = $this->getDoctrine()->getRepository('IIAWebServiceBundle:User')->findAll();
 		return $users;
