@@ -6,16 +6,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\User\InMemoryUserProvider;
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+
 use IIA\WebServiceBundle\Entity\User;
 use IIA\WebServiceBundle\Entity\Team;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use IIA\WebServiceBundle\EntityJson\UserJson;
 
 
 class UserRestController extends Controller
 {
 	/**
-	 * User flow information
+	 * Not used
+	 * User flow informations
 	 * @return json
 	 */
 	public function postUserinformationAction(){
@@ -32,6 +34,7 @@ class UserRestController extends Controller
 		$userJson->setId($user->getId());
 		$userJson->setUsername($user->getUsername());
 		$userJson->setEmail($user->getEmail());
+		$userJson->setPassword($user->getPassword());
 		$userJson->setLastLogin($user->getLastLogin());
 		$userJson->setCreatedAt($user->getCreatedAt());
 		$userJson->setUpdatedAt($user->getUpdatedAt());
@@ -40,10 +43,35 @@ class UserRestController extends Controller
 	}
 	
 	/**
+	 * User flow informations after user is authentificated
+	 * @param User user
+	 * @return userJson
+	 */
+	private function CreateFlowUserInformation($user){
+	
+		$temp = $this->RemoveDuplicateMcq($user);
+		if(!is_object($temp)){
+			throw $this->createNotFoundException();
+		}
+
+		//Create user with specific information to create json flow
+		$userJson = new UserJson();
+		$userJson->setId($temp->getId());
+		$userJson->setUsername($temp->getUsername());
+		$userJson->setEmail($temp->getEmail());
+		$userJson->setPassword($temp->getPassword());
+		$userJson->setLastLogin($temp->getLastLogin());
+		$userJson->setCreatedAt($temp->getCreatedAt());
+		$userJson->setUpdatedAt($temp->getUpdatedAt());
+	
+		return $userJson;
+	}
+	
+	/**
 	 * Not used
 	 * @param string $username
 	 */
-	public function postUserProfilAction($username){
+	public function postUserProfilAction(){
 		$username = $this->getRequest()->get('username');
 		$temp = $this->getDoctrine()->getRepository('IIAWebServiceBundle:User')->findOneByUsername($username);
 		$user = new User();
@@ -66,7 +94,9 @@ class UserRestController extends Controller
 	
 	/**
 	 * Validate user authentification
-	 * @return boolean
+	 * if user authentificated return user's json information
+	 * else return false
+	 * @return json information
 	 */
 	public function postUserauthAction(){
 		$login = $this->getRequest()->get('login');
@@ -76,18 +106,28 @@ class UserRestController extends Controller
 		$factory = $this->get('security.encoder_factory');
 		$user = $user_manager->findUserByUsername($login);
 
+		//If no user
 		if (is_null($user)){
-			$bool = false;
-			return $bool;
+			return false;
+		}else{
+			//user's Authentification verification
+			$encoder = $factory->getEncoder($user);
+			$bool = ($encoder->isPasswordValid($user->getPassword(),$pwd,$user->getSalt())) ? true : false;
+
+			//if user authentificated
+			if ($bool == true){
+				$userJson = new UserJson();
+				$userJson = self::CreateFlowUserInformation($user);
+				return $userJson; 
+			}else{
+				return false;
+			}
 		}
-		$encoder = $factory->getEncoder($user);
-		$bool = ($encoder->isPasswordValid($user->getPassword(),$pwd,$user->getSalt())) ? true : false;
-		
-		return $bool;
+		return false;
 	}
 	
 	/**
-	 * Remove duplicate mcq before to send user's json flux
+	 * Remove duplicate mcq before to send user's json flow
 	 * @param User $user
 	 * @return $userWithoutDuplicate
 	 */

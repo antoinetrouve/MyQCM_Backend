@@ -31,9 +31,9 @@ class McqRestController extends Controller
 		return $questions;
 	}
 	
-	public function getMcqsuserAction($user_id = 1, $category_id = 3){
-		//$user_id = $this->getRequest()->get('userId');
-		//$category_id = $this->getRequest()->get('categoryId');
+	public function postMcqsuserAction(){
+		$user_id = $this->getRequest()->get('userId');
+		$category_id = $this->getRequest()->get('categoryId');
 		$user = new User();
 		$mcq = new Mcq();
 		$listMcqIds = array();

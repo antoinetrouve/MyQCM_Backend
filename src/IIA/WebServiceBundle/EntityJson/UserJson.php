@@ -3,7 +3,6 @@
 namespace IIA\WebServiceBundle\EntityJson;
 
 use JMS\Serializer\Annotation\Type;
-use \Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * 
@@ -48,6 +47,12 @@ class UserJson {
 	 */
 	private $updatedAt;
 	
+	/**
+	 * User's password
+	 * @Type("string")
+	 */
+	private $password;
+	
 	public function getId() {
 		return $this->id;
 	}
@@ -55,6 +60,7 @@ class UserJson {
 		$this->id = $id;
 		return $this;
 	}
+	
 	public function getUsername() {
 		return $this->username;
 	}
@@ -62,6 +68,7 @@ class UserJson {
 		$this->username = $username;
 		return $this;
 	}
+	
 	public function getEmail() {
 		return $this->email;
 	}
@@ -69,6 +76,7 @@ class UserJson {
 		$this->email = $email;
 		return $this;
 	}
+	
 	public function getLastlogin() {
 		return $this->lastlogin;
 	}
@@ -76,6 +84,7 @@ class UserJson {
 		$this->lastlogin = $lastlogin;
 		return $this;
 	}
+	
 	public function getCreatedAt() {
 		return $this->createdAt;
 	}
@@ -83,11 +92,20 @@ class UserJson {
 		$this->createdAt = $createdAt;
 		return $this;
 	}
+	
 	public function getUpdatedAt() {
 		return $this->updatedAt;
 	}
 	public function setUpdatedAt($updatedAt) {
 		$this->updatedAt = $updatedAt;
+		return $this;
+	}
+
+	public function getPassword() {
+		return $this->password;
+	}
+	public function setPassword($password) {
+		$this->password = $password;
 		return $this;
 	}
 	
