@@ -58,6 +58,8 @@ class Answer
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime")
+     * 
+     * @Expose
      */
     private $updatedAt;
 

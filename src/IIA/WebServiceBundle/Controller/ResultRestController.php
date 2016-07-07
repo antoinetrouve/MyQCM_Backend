@@ -12,6 +12,7 @@ use IIA\WebServiceBundle\Entity\User;
 use JMS\Serializer\Annotation;
 use JMS\Serializer\SerializerBuilder;
 use IIA\WebServiceBundle\Entity\Mcq;
+use Symfony\Component\Serializer\Encoder\JsonDecode;
 
 class ResultRestController extends Controller
 {
@@ -37,7 +38,9 @@ class ResultRestController extends Controller
 		return $jsonData;
 	}
 
-	public function postResultAction($jsonData){
+	public function postResultAction(){
+		$jsonData = $this->getRequest()->get('result');
+		var_dump($jsonData);
 		$result = new Result();
 		$user = new  User();
 		$mcq = new  Mcq();
@@ -46,16 +49,19 @@ class ResultRestController extends Controller
 
 		//Get Result json Flow
 		$serializer = $serializerBuilder::create()->build();
-		$resultJson = $serializer->deserialize($jsonData, 'IIA\WebServiceBundle\EntityJson\ResultJson', 'json');
 
+		$resultJson = $serializer->deserialize($jsonData,'IIA\WebServiceBundle\EntityJson\ResultJson','json');
+		
 		/*Get Entities with Json flow*/
 		//Get user
 		$idUser = $resultJson->getIdUser();
-		$user = $this->getDoctrine()->getRepository('IIAWebServiceBundle:User')->findOneByid($idUser);
+		$user = $this->getDoctrine()->getRepository('IIAWebServiceBundle:User')->findOneById($idUser);
+		
 
 		//Get mcq
 		$idMcq = $resultJson->getIdMcq();
-		$mcq = $this->getDoctrine()->getRepository('IIAWebServiceBundle:MCQ')->findOneByid($idMcq);
+		
+		$mcq = $this->getDoctrine()->getRepository('IIAWebServiceBundle:Mcq')->findOneById($idMcq);
 
 		//Get answer's list
 		$listIdAnswers = $resultJson->getListIdAnswer();
@@ -116,8 +122,19 @@ class ResultRestController extends Controller
 				$score =$score +1 ;
 			}
 		}
-		print_r($score);
-		return $resultJson;
+		$em = $this->getDoctrine()->getManager();
+		
+		$result->setScore($score);
+		$result->setMcq($mcq);
+		$result->setUser($user);
+		$result->setIsCompleted(true);
+		
+		// tells Doctrine you want to (eventually) save the Product (no queries yet)
+		$em->persist($result);
+		
+		// actually executes the queries (i.e. the INSERT query)
+		$em->flush();
+		return true;
 	}
 	
 	/**

@@ -47,8 +47,6 @@ class UserAdmin extends Admin
 		$listMapper
 			->addIdentifier('username')
 			->add('email')
-			->add('password')
-			->add('roles')
 			->add('team', null, array('associated_property' => 'name'))
 			->add('mcqs', null, array('associated_property' => 'name'))
 			->add('createdAt')
