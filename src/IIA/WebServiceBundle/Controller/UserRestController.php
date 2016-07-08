@@ -92,6 +92,42 @@ class UserRestController extends Controller
 		return $users;
 	}
 	
+	public function getUserAction($username){
+		$user = $this->getDoctrine()->getRepository('IIAWebServiceBundle:User')->findOneByUsername($username);
+		$mcqUser = array();
+		$mcqTeam = array();
+		 
+		$team = new Team();
+		 
+		// get the list of Team
+		$team = $user->getTeam();
+		var_dump($team);
+		
+		die();
+		// get the list of mcq_id into my user
+		foreach ($user->getMcqs() as $mcq){
+			array_push($mcqUser, $mcq->getId());
+		}
+		
+		foreach ($team->getMcqs() as $mcq){
+			array_push($mcqTeam, $mcq->getId());
+		}
+		 
+		// if we have diffrence in this 2 two add the diff in user mcq
+		$diff = array();
+		
+		$diff = array_diff($mcqTeam, $mcqUser);
+		 
+		foreach ($diff as $mcq_id){
+			$user->AddMcq($this->getDoctrine()->getRepository('IIAWebServiceBundle:Mcq')->findOneById($mcq_id));
+		}
+		 
+		if(!is_object($user)){
+			throw $this->createNotFoundException();
+		}
+		return $user;
+	}
+	
 	/**
 	 * Validate user authentification
 	 * if user authentificated return user's json information
