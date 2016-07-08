@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: "@AdminAdminBundleSonataAdminBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -10,7 +11,7 @@ parameters:
 
 framework:
     #esi:             ~
-    #translator:      { fallbacks: ["%locale%"] }
+    translator:      { fallbacks: ["%locale%"] }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -37,9 +38,11 @@ twig:
     strict_variables: "%kernel.debug%"
 
 # Doctrine Configuration
+# /!\ using "pdo_mysql" permanent value in driver parameter to avoid auto-generated parameters.yml
+# during the composer install (which delete database_driver attribut)
 doctrine:
     dbal:
-        driver:   "%database_driver%"
+        driver:   "pdo_mysql"
         host:     "%database_host%"
         port:     "%database_port%"
         dbname:   "%database_name%"
@@ -65,3 +68,42 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+    
+#fos_user Configuration
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: IIA\WebServiceBundle\Entity\User
+    
+#fos_rest Configuration
+fos_rest:
+    param_fetcher_listener: true
+    body_listener: true
+    format_listener: true
+    view:
+        view_response_listener: 'force'
+        formats:
+            xml: true
+            json : true
+        templating_formats:
+            html: true
+        force_redirects:
+            html: true
+        failed_validation: HTTP_BAD_REQUEST
+        default_engine: twig
+    routing_loader:
+        default_format: json
+#Sonata Admin Configuration
+sonata_admin:
+    title: My Qcm Admin
+ 
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+ 
+        sonata.block.service.text:
+        sonata.block.service.action:
+        sonata.block.service.rss:
+        

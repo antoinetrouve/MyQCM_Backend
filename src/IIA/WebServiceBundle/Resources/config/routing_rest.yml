@@ -1,0 +1,29 @@
+user : 
+  type: rest
+  resource:     "IIAWebServiceBundle:UserRest"
+  name_prefix:  api_
+  
+answer : 
+  type: rest
+  resource:     "IIAWebServiceBundle:AnswerRest"
+  name_prefix:  api_
+  
+categorie : 
+  type: rest
+  resource:     "IIAWebServiceBundle:CategoryRest"
+  name_prefix:  api_
+  
+question : 
+  type: rest
+  resource:     "IIAWebServiceBundle:QuestionRest"
+  name_prefix:  api_
+  
+mcq : 
+  type: rest
+  resource:     "IIAWebServiceBundle:McqRest"
+  name_prefix:  api_
+
+result : 
+  type: rest
+  resource:     "IIAWebServiceBundle:ResultRest"
+  name_prefix:  api_
